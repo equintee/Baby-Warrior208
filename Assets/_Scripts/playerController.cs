@@ -1,8 +1,9 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
-
+using UnityEngine.UI;
 
 public class playerController : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class playerController : MonoBehaviour
     public Transform playField;
     public GameObject skeleton;
     public Transform playerUnits;
+    public GameObject manaBar;
 
     private Vector3 horizontalMovement;
     private Vector3 verticalMovement;
@@ -19,6 +21,8 @@ public class playerController : MonoBehaviour
     private Touch touch;
     private Transform playerModel;
     private Rigidbody rb;
+    private int playerMana = 50;
+
 
     void Start()
     {
@@ -60,12 +64,35 @@ public class playerController : MonoBehaviour
         this.enabled = !this.enabled;
     }
 
+
+    private float skeletonSpawnTime;
     public async void spawnSkeletons()
     {
+        if (Time.realtimeSinceStartup < skeletonSpawnTime + 1f)
+            return;
+        skeletonSpawnTime = Time.realtimeSinceStartup;
         setUpdate();
         animator.SetTrigger("spawnSkeleton");
         await Task.Delay(System.TimeSpan.FromSeconds(1f));
         Instantiate(skeleton, playField.GetComponent<BoxCollider>().ClosestPoint(transform.position), Quaternion.identity, playerUnits.transform);
         Invoke("setUpdate", 1f);
+    }
+
+
+    private Tween manaBarTween;
+    private void updateManaBar()
+    {
+        if (manaBarTween != null)
+            DOTween.Kill(manaBarTween);
+
+        float targetManaBarValue = playerMana * 0.01f;
+        manaBarTween = DOTween.To(() => manaBar.GetComponent<Image>().fillAmount, x => manaBar.GetComponent<Image>().fillAmount = x, targetManaBarValue, 0.5f).SetEase(Ease.Linear).OnComplete(() => manaBarTween = null);
+
+    }
+
+    public void updateMana(int value)
+    {
+        playerMana += value;
+        updateManaBar();
     }
 }
