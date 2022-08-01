@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 
@@ -8,20 +9,31 @@ public class playerController : MonoBehaviour
     public float movementSpeed;
     public float rotationSpeed;
     public Joystick joystick;
+    public Transform playField;
+    public GameObject skeleton;
+    public Transform playerUnits;
 
     private Vector3 horizontalMovement;
     private Vector3 verticalMovement;
     private Animator animator;
-
     private Touch touch;
+    private Transform playerModel;
+    private Rigidbody rb;
 
     void Start()
     {
-        animator = GetComponent<Animator>();
+        playerModel = transform.GetChild(0);
+        animator = playerModel.GetComponent<Animator>();
+        rb = transform.GetComponent<Rigidbody>();
     }
 
     
-    void Update()
+    void FixedUpdate()
+    {
+        playerMovement();
+    }
+
+    private void playerMovement()
     {
         if (Input.touchCount > 0)
         {
@@ -32,12 +44,28 @@ public class playerController : MonoBehaviour
                 animator.SetTrigger("idle");
         }
 
-        float yRotation = joystick.Horizontal * rotationSpeed * Time.deltaTime;
+        //Fixable
+        Vector3 rotation = new Vector3(0, (Mathf.Atan2(joystick.Vertical, joystick.Horizontal) * 180 / Mathf.PI * -1) + 90, 0);
+        playerModel.eulerAngles = rotation;
 
-        transform.eulerAngles += new Vector3(0, yRotation, 0);
+        verticalMovement = Vector3.forward * movementSpeed * Time.fixedDeltaTime * joystick.Vertical;
+        horizontalMovement = Vector3.right * movementSpeed * Time.fixedDeltaTime * joystick.Horizontal;
 
-        verticalMovement = Vector3.forward * movementSpeed * Time.deltaTime * joystick.Vertical;
-        horizontalMovement = Vector3.right * movementSpeed * Time.deltaTime * joystick.Horizontal;
-        transform.Translate(verticalMovement + horizontalMovement);
+        rb.MovePosition(verticalMovement + horizontalMovement + transform.position);
+    }
+
+    
+    private void setUpdate()
+    {
+        this.enabled = !this.enabled;
+    }
+
+    public async void spawnSkeletons()
+    {
+        setUpdate();
+        animator.SetTrigger("spawnSkeleton");
+        await Task.Delay(System.TimeSpan.FromSeconds(1f));
+        Instantiate(skeleton, playField.GetComponent<BoxCollider>().ClosestPoint(transform.position), Quaternion.identity, playerUnits.transform);
+        Invoke("setUpdate", 1f);
     }
 }
