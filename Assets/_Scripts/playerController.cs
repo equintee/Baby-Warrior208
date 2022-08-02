@@ -14,6 +14,7 @@ public class playerController : MonoBehaviour
     public GameObject skeleton;
     public Transform playerUnits;
     public GameObject manaBar;
+    public int manaCost;
 
     private Vector3 horizontalMovement;
     private Vector3 verticalMovement;
@@ -22,6 +23,9 @@ public class playerController : MonoBehaviour
     private Transform playerModel;
     private Rigidbody rb;
     private int playerMana = 50;
+
+    private float borderX = 9.5f;
+    private float borderZ = 9.5f;
 
 
     void Start()
@@ -56,6 +60,16 @@ public class playerController : MonoBehaviour
         horizontalMovement = Vector3.right * movementSpeed * Time.fixedDeltaTime * joystick.Horizontal;
 
         rb.MovePosition(verticalMovement + horizontalMovement + transform.position);
+
+        if (rb.position.x > borderX)
+            rb.position = new Vector3(borderX, 0, rb.position.z);
+        if (-1 * borderX > rb.position.x)
+            rb.position = new Vector3(-1 * borderX, 0, rb.position.z);
+
+        if (rb.position.z > borderZ)
+            rb.position = new Vector3(rb.position.x, 0, borderZ);
+        if (-1 * borderZ > rb.position.z)
+            rb.position = new Vector3(rb.position.x, 0, borderZ * -1);
     }
 
     
@@ -64,17 +78,19 @@ public class playerController : MonoBehaviour
         this.enabled = !this.enabled;
     }
 
-
-    private float skeletonSpawnTime;
-    public async void spawnSkeletons()
+    public async void spawnSkeletons(Vector3 spawnPosition)
     {
-        if (Time.realtimeSinceStartup < skeletonSpawnTime + 1f)
-            return;
-        skeletonSpawnTime = Time.realtimeSinceStartup;
+        //Disable playerMovement
         setUpdate();
-        animator.SetTrigger("spawnSkeleton");
-        await Task.Delay(System.TimeSpan.FromSeconds(1f));
-        Instantiate(skeleton, playField.GetComponent<BoxCollider>().ClosestPoint(transform.position), Quaternion.identity, playerUnits.transform);
+
+        while(playerMana >= manaCost)
+        {
+            updateMana(-manaCost);
+            animator.SetTrigger("spawnSkeleton");
+            await Task.Delay(System.TimeSpan.FromSeconds(1f));
+            Instantiate(skeleton, spawnPosition, Quaternion.identity, playerUnits.transform);
+        }
+        
         Invoke("setUpdate", 1f);
     }
 
@@ -94,5 +110,14 @@ public class playerController : MonoBehaviour
     {
         playerMana += value;
         updateManaBar();
+    }
+
+    public float[] getBorders()
+    {
+        float[] borders = new float[2]; //X,Z
+        borders[0] = borderX;
+        borders[1] = borderZ;
+
+        return borders;
     }
 }

@@ -4,13 +4,8 @@ using UnityEngine;
 
 public class playerSpawnPoint : MonoBehaviour
 {
-    public GameObject skeletonSpawnButton;
     private void OnTriggerEnter(Collider other)
     {
-        skeletonSpawnButton.SetActive(true);
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        skeletonSpawnButton.SetActive(false);
+        other.gameObject.GetComponent<playerController>().spawnSkeletons(transform.position);
     }
 }
