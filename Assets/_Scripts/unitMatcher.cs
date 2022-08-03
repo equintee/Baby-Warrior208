@@ -20,7 +20,6 @@ public class unitMatcher : MonoBehaviour
         foreach (Transform enemySkeleton in transform.GetChild(1))
             enemySkeletons.Add(enemySkeleton.gameObject);
 
-        InvokeRepeating("setTargets", 2f, 10);
 
     }
 
@@ -48,6 +47,14 @@ public class unitMatcher : MonoBehaviour
             }
         }
 
+    }
+
+    public void setTarget(GameObject skeleton, bool isEnemy = false)
+    {
+        /*TODO: enemy ve player skeleton layerý aç
+          istenilen layera raycast at en yakýn objeye setTargetYap
+          setTargets() methoduna bir bak
+        */
     }
     
 }
