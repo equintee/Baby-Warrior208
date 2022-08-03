@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1073,9 +1073,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitSpeed: 5
+  player: {fileID: 245715719}
   enemy: {fileID: 1541495444}
-  playerSkeletons: []
-  enemySkeletons: []
+  playerUnitsList: []
+  enemyUnitsList: []
+  playerUnits: {fileID: 0}
+  enemyUnits: {fileID: 0}
 --- !u!1 &1541495444
 GameObject:
   m_ObjectHideFlags: 0
@@ -1108,6 +1111,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collectableManaParent: {fileID: 1003846118}
+  enemyUnit: {fileID: 0}
+  enemyUnitParent: {fileID: 0}
+  manaCostPerUnit: 0
 --- !u!65 &1541495446
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1313,7 +1319,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1713368840}
-  m_LocalRotation: {x: 0.31141636, y: -0.000000023123473, z: 0.000000007577848, w: 0.9502736}
+  m_LocalRotation: {x: 0.31141636, y: 0.000000023123473, z: -0.000000007577848, w: 0.9502736}
   m_LocalPosition: {x: 9.56, y: 9.76, z: -17.572}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1399,7 +1405,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1758361052}
-  m_LocalRotation: {x: 0.31141636, y: -0.000000023123473, z: 0.000000007577848, w: 0.9502736}
+  m_LocalRotation: {x: 0.31141636, y: 0.000000023123473, z: -0.000000007577848, w: 0.9502736}
   m_LocalPosition: {x: 9.56, y: 9.76, z: -17.572}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -1568,7 +1574,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4398646192631565608, guid: 76dfe82f71534ea41ba4b53f38cfdb1c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8.92
+      value: -9.13
       objectReference: {fileID: 0}
     - target: {fileID: 4398646192631565608, guid: 76dfe82f71534ea41ba4b53f38cfdb1c, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1576,7 +1582,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4398646192631565608, guid: 76dfe82f71534ea41ba4b53f38cfdb1c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 8.53
+      value: 8.67
       objectReference: {fileID: 0}
     - target: {fileID: 4398646192631565608, guid: 76dfe82f71534ea41ba4b53f38cfdb1c, type: 3}
       propertyPath: m_LocalRotation.w
