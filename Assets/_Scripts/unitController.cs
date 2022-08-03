@@ -31,9 +31,20 @@ public class unitController : MonoBehaviour
         this.target = target;
     }
 
+    private bool isMovingToTarget = true;
     private void Update()
     {
-        if (target != null)
+
+        if (isMovingToTarget)
+        {
+            transform.DOLookAt(target.position, 0f);
             rb.position = Vector3.MoveTowards(rb.position, target.position, moveSpeed * Time.deltaTime);
+
+            if (Vector3.Distance(rb.position, target.position) < 1f)
+                isMovingToTarget = false;
+        }
+
+        
+            
     }
 }

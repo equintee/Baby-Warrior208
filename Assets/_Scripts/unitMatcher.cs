@@ -58,7 +58,7 @@ public class unitMatcher : MonoBehaviour
         if (enemySkeletons.Count == 0)
             skeleton.GetComponent<unitController>().setTarget(enemy.transform);
 
-
+        skeleton.GetComponent<unitController>().enabled = true;
     }
     
 }
