@@ -15,6 +15,7 @@ public class playerController : MonoBehaviour
     public Transform playerUnits;
     public GameObject manaBar;
     public int manaCost;
+    private unitMatcher unitMatcher;
 
     private Vector3 horizontalMovement;
     private Vector3 verticalMovement;
@@ -24,8 +25,10 @@ public class playerController : MonoBehaviour
     private Rigidbody rb;
     private int playerMana = 50;
 
+
     private float borderX = 9.5f;
     private float borderZ = 9.5f;
+
 
 
     void Start()
@@ -33,6 +36,7 @@ public class playerController : MonoBehaviour
         playerModel = transform.GetChild(0);
         animator = playerModel.GetComponent<Animator>();
         rb = transform.GetComponent<Rigidbody>();
+        unitMatcher = FindObjectOfType<unitMatcher>();
     }
 
     
@@ -88,7 +92,9 @@ public class playerController : MonoBehaviour
             updateMana(-manaCost);
             animator.SetTrigger("spawnSkeleton");
             await Task.Delay(System.TimeSpan.FromSeconds(1f));
-            Instantiate(skeleton, spawnPosition, Quaternion.identity, playerUnits.transform);
+            GameObject spawnedSkeleton = Instantiate(skeleton, spawnPosition, Quaternion.identity, playerUnits.transform);
+            unitMatcher.playerSkeletons.Add(spawnedSkeleton);
+
         }
         
         Invoke("setUpdate", 1f);
@@ -120,4 +126,5 @@ public class playerController : MonoBehaviour
 
         return borders;
     }
+
 }

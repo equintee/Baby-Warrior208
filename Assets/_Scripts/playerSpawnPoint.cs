@@ -6,6 +6,7 @@ public class playerSpawnPoint : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        other.gameObject.GetComponent<playerController>().spawnSkeletons(transform.position);
+        if(other.CompareTag("Player"))
+            other.gameObject.GetComponent<playerController>().spawnSkeletons(transform.position);
     }
 }

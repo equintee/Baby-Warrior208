@@ -15,7 +15,7 @@ public class enemyController : MonoBehaviour
     private float lowerBoundX;
     private float upperBoundZ;
     private float lowerBoundZ;
-
+    private int mana;
 
     void Start()
     {
@@ -34,16 +34,32 @@ public class enemyController : MonoBehaviour
         movementSpeed = playerController.movementSpeed;
         animator = transform.GetChild(0).GetComponent<Animator>();
 
+
         moveToMana();
         animator.SetTrigger("run");
     }
 
+    private void Update()
+    {
+        
+    }
 
     private GameObject closestMana;
     private void moveToMana()
     {
         if (closestMana == null && !findClosestMana())
+        {
             makeRandomMovement();
+            return;
+        }
+
+        DOTween.Kill(rb);
+        Vector3 wayPoint = closestMana.transform.position;
+        wayPoint.y = 0;
+        transform.DOLookAt(wayPoint, 0f);
+        rb.DOMove(wayPoint, movementSpeed).SetSpeedBased().SetEase(Ease.Linear).OnComplete(() => moveToMana());
+
+
 
     }
 
@@ -51,7 +67,7 @@ public class enemyController : MonoBehaviour
     {
         Vector3 waypoint = new Vector3(UnityEngine.Random.Range(lowerBoundX, upperBoundX), 0, UnityEngine.Random.Range(lowerBoundZ, upperBoundZ));
         transform.DOLookAt(waypoint, 0f);
-        rb.DOMove(waypoint, movementSpeed).SetSpeedBased().SetEase(Ease.Linear).OnUpdate(() => { if (findClosestMana()) DOTween.Kill(transform); }).OnComplete(() => moveToMana());
+        rb.DOMove(waypoint, movementSpeed).SetSpeedBased().SetEase(Ease.Linear).OnUpdate(() => { if (findClosestMana()) moveToMana(); }).OnComplete(() => moveToMana());
         
     }
 
@@ -70,6 +86,17 @@ public class enemyController : MonoBehaviour
         }
 
         return minDistance != 9999;     
+
+    }
+
+
+    public void updateMana(int value)
+    {
+        mana += value;
+    }
+
+    public void setSkeletonTargets()
+    {
 
     }
 

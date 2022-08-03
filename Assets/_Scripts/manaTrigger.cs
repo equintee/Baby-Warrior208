@@ -8,7 +8,13 @@ public class manaTrigger : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         DOTween.Kill(transform);
-        other.GetComponent<playerController>().updateMana(10);
+        if (other.transform.CompareTag("Player"))
+            other.GetComponent<playerController>().updateMana(10);
+
+
+        if (other.transform.CompareTag("Enemy"))
+            other.GetComponent<enemyController>().updateMana(10);
         Destroy(gameObject);
     }
 }
+

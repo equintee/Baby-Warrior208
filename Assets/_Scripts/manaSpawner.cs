@@ -31,8 +31,7 @@ public class manaSpawner : MonoBehaviour
     private void spawnMana()
     {
         Vector3 spawnPoint = new Vector3(Random.Range(lowerBoundX, upperBoundX), 0.5f, Random.Range(lowerBoundZ, upperBoundZ));
-        Transform spawnedMana = Instantiate(manaPrefab, spawnPoint, Quaternion.identity, transform).transform;
-        spawnedMana.eulerAngles = new Vector3(90, 0, 0);
+        Transform spawnedMana = Instantiate(manaPrefab, spawnPoint, Quaternion.identity, transform).transform.GetChild(0);
         spawnedMana.DOMoveY(spawnedMana.position.y + 1, 0.5f).SetEase(Ease.OutQuart).SetLoops(-1, LoopType.Yoyo);
         spawnedMana.DORotate(new Vector3(90, 360, 0), 2f, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(-1);
         Invoke("spawnMana", 1f);
