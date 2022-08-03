@@ -327,7 +327,7 @@ MonoBehaviour:
   rotationSpeed: 0
   joystick: {fileID: 951884270}
   playField: {fileID: 728387842}
-  skeleton: {fileID: 100062, guid: f227b5017a7c0184a96c2c26f1e4408d, type: 3}
+  skeleton: {fileID: 1661798686736646891, guid: 97265ef32edaba546bda1995a921c911, type: 3}
   playerUnits: {fileID: 1442558643}
   manaBar: {fileID: 538040277}
   manaCost: 25
@@ -1036,6 +1036,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1500721498}
+  - component: {fileID: 1500721499}
   m_Layer: 0
   m_Name: Units
   m_TagString: Untagged
@@ -1059,6 +1060,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1500721499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1500721497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 883a3fd0e337b274c80fa92471ede21e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitSpeed: 5
+  enemy: {fileID: 1541495444}
+  playerSkeletons: []
+  enemySkeletons: []
 --- !u!1 &1541495444
 GameObject:
   m_ObjectHideFlags: 0
@@ -1296,7 +1313,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1713368840}
-  m_LocalRotation: {x: 0.31141636, y: 0.000000023123473, z: -0.000000007577848, w: 0.9502736}
+  m_LocalRotation: {x: 0.31141636, y: -0.000000023123473, z: 0.000000007577848, w: 0.9502736}
   m_LocalPosition: {x: 9.56, y: 9.76, z: -17.572}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1382,7 +1399,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1758361052}
-  m_LocalRotation: {x: 0.31141636, y: 0.000000023123473, z: -0.000000007577848, w: 0.9502736}
+  m_LocalRotation: {x: 0.31141636, y: -0.000000023123473, z: 0.000000007577848, w: 0.9502736}
   m_LocalPosition: {x: 9.56, y: 9.76, z: -17.572}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
