@@ -93,7 +93,7 @@ public class playerController : MonoBehaviour
             animator.SetTrigger("spawnSkeleton");
             await Task.Delay(System.TimeSpan.FromSeconds(1f));
             GameObject spawnedSkeleton = Instantiate(skeleton, spawnPosition, Quaternion.identity, playerUnits.transform);
-            unitMatcher.playerSkeletons.Add(spawnedSkeleton);
+            unitMatcher.playerUnitsList.Add(spawnedSkeleton);
             unitMatcher.setTarget(spawnedSkeleton);
         }
         
