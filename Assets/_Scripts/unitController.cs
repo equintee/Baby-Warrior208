@@ -19,15 +19,6 @@ public class unitController : MonoBehaviour
     Tweener lerper;
     public void setTarget(Transform target)
     {
-        /*DOTween.Kill(transform);
-        Vector3 waypoint = target.GetComponent<BoxCollider>().ClosestPoint(transform.position);
-
-        transform.DOLookAt(waypoint, 0f);
-        lerper = rb.DOMove(waypoint, moveSpeed).SetSpeedBased().OnUpdate(() =>
-        {
-            lerper.ChangeEndValue(target.GetComponent<BoxCollider>().ClosestPoint(transform.position), true).SetSpeedBased();
-        }).OnComplete(() => DOTween.Kill(lerper));*/
-
         this.target = target;
     }
 
@@ -44,7 +35,5 @@ public class unitController : MonoBehaviour
                 isMovingToTarget = false;
         }
 
-        
-            
     }
 }
