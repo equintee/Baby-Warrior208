@@ -39,10 +39,6 @@ public class enemyController : MonoBehaviour
         animator.SetTrigger("run");
     }
 
-    private void Update()
-    {
-        
-    }
 
     private GameObject closestMana;
     private void moveToMana()
@@ -95,9 +91,6 @@ public class enemyController : MonoBehaviour
         mana += value;
     }
 
-    public void setSkeletonTargets()
-    {
 
-    }
 
 }

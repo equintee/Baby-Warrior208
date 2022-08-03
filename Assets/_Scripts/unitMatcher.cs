@@ -23,7 +23,6 @@ public class unitMatcher : MonoBehaviour
 
     }
 
-
     private RaycastHit hit;
     public void setTargets()
     {
@@ -55,6 +54,11 @@ public class unitMatcher : MonoBehaviour
           istenilen layera raycast at en yakýn objeye setTargetYap
           setTargets() methoduna bir bak
         */
+
+        if (enemySkeletons.Count == 0)
+            skeleton.GetComponent<unitController>().setTarget(enemy.transform);
+
+
     }
     
 }

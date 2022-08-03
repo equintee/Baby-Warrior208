@@ -94,7 +94,7 @@ public class playerController : MonoBehaviour
             await Task.Delay(System.TimeSpan.FromSeconds(1f));
             GameObject spawnedSkeleton = Instantiate(skeleton, spawnPosition, Quaternion.identity, playerUnits.transform);
             unitMatcher.playerSkeletons.Add(spawnedSkeleton);
-
+            unitMatcher.setTarget(spawnedSkeleton);
         }
         
         Invoke("setUpdate", 1f);
