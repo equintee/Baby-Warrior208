@@ -128,7 +128,7 @@ public class enemyController : MonoBehaviour
             unitMatcher.enemyUnitsList.Add(spawnedSkeleton);
             if (unitMatcher.enemyUnitsList.Count == 1)
                 unitMatcher.setTargetForAllUnits(unitMatcher.playerUnitsList);
-            unitMatcher.setTarget(spawnedSkeleton);
+            unitMatcher.addSkeletonToList(unitMatcher.enemyUnitsList, spawnedSkeleton);
         }
 
         AIMovement();

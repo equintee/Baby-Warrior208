@@ -97,7 +97,7 @@ public class playerController : MonoBehaviour
             if (unitMatcher.playerUnitsList.Count == 1)
                 unitMatcher.setTargetForAllUnits(unitMatcher.enemyUnitsList);
 
-            unitMatcher.setTarget(spawnedSkeleton);
+            unitMatcher.addSkeletonToList(unitMatcher.playerUnitsList, spawnedSkeleton);
         }
         
         Invoke("setUpdate", 1f);

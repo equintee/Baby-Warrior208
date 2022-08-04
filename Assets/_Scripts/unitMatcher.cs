@@ -15,7 +15,7 @@ public class unitMatcher : MonoBehaviour
     public Transform enemyUnits;
 
 
-    void Start()
+    void Awake()
     {
         playerUnitsList = new List<GameObject>();
         enemyUnitsList = new List<GameObject>();
@@ -31,9 +31,17 @@ public class unitMatcher : MonoBehaviour
 
     }
 
+    private void Update()
+    {
+        foreach (GameObject skeleton in playerUnitsList)
+            setTarget(skeleton);
+
+        foreach (GameObject skeleton in enemyUnitsList)
+            setTarget(skeleton);
+    }
 
     private Collider[] hitList;
-    public void setTarget(GameObject skeleton, bool isEnemy = false)
+    public void setTarget(GameObject skeleton)
     {
         unitController skeletonController = skeleton.GetComponent<unitController>();
 
@@ -103,6 +111,12 @@ public class unitMatcher : MonoBehaviour
     {
         foreach (GameObject skeleton in skeletonList)
             setTarget(skeleton);
+    }
+
+    public void addSkeletonToList(List<GameObject> list, GameObject skeleton)
+    {
+        if (!list.Contains(skeleton))
+            list.Add(skeleton);
     }
 
 }

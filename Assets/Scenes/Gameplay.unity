@@ -1164,6 +1164,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: enemyUnit
       objectReference: {fileID: 0}
+    - target: {fileID: 1661798686736646891, guid: b50ef84db81654c408a5b05090f20522, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1661798686746177877, guid: b50ef84db81654c408a5b05090f20522, type: 3}
       propertyPath: m_WarningMessage
       value: "\nBinding warning: Some generic clip(s) animate transforms that are
