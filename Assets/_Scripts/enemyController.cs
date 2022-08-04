@@ -127,7 +127,7 @@ public class enemyController : MonoBehaviour
             GameObject spawnedSkeleton = Instantiate(enemyUnit, spawnPosition, Quaternion.identity, enemyUnitParent.transform);
             unitMatcher.enemyUnitsList.Add(spawnedSkeleton);
             if (unitMatcher.enemyUnitsList.Count == 1)
-                unitMatcher.setTargetForAllUnits(unitMatcher.enemyUnitsList);
+                unitMatcher.setTargetForAllUnits(unitMatcher.playerUnitsList);
             unitMatcher.setTarget(spawnedSkeleton);
         }
 

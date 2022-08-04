@@ -8,17 +8,26 @@ public class unitMatcher : MonoBehaviour
     public GameObject player;
     public GameObject enemy;
 
-    [HideInInspector]public List<GameObject> playerUnitsList;
-    [HideInInspector]public List<GameObject> enemyUnitsList;
+    [HideInInspector] public List<GameObject> playerUnitsList;
+    [HideInInspector] public List<GameObject> enemyUnitsList;
 
     public Transform playerUnits;
     public Transform enemyUnits;
 
-    
+
     void Start()
     {
         playerUnitsList = new List<GameObject>();
         enemyUnitsList = new List<GameObject>();
+
+        foreach (Transform skeleton in playerUnits)
+            playerUnitsList.Add(skeleton.gameObject);
+
+        foreach (Transform skeleton in enemyUnits)
+            enemyUnitsList.Add(skeleton.gameObject);
+
+        setTargetForAllUnits(playerUnitsList);
+        setTargetForAllUnits(enemyUnitsList);
 
     }
 
@@ -27,10 +36,10 @@ public class unitMatcher : MonoBehaviour
     public void setTarget(GameObject skeleton, bool isEnemy = false)
     {
         unitController skeletonController = skeleton.GetComponent<unitController>();
-        
+
         if (skeleton.CompareTag("playerUnit"))
         {
-            if(enemyUnitsList.Count > 0)
+            if (enemyUnitsList.Count > 0)
             {
                 hitList = Physics.OverlapSphere(skeleton.transform.position, 20);
                 foreach (Collider collider in hitList)
@@ -59,7 +68,7 @@ public class unitMatcher : MonoBehaviour
 
         if (skeleton.CompareTag("enemyUnit"))
         {
-            if(playerUnitsList.Count > 0)
+            if (playerUnitsList.Count > 0)
             {
                 hitList = Physics.OverlapSphere(skeleton.transform.position, 20);
                 foreach (Collider collider in hitList)
@@ -71,18 +80,17 @@ public class unitMatcher : MonoBehaviour
                         return;
                     }
                 }
+            }
 
-                if(playerUnitsList.Count == 0 && playerUnits.childCount != 0)
-                {
-                    skeletonController.setTarget(playerUnits.GetChild(Random.Range(0, playerUnits.childCount)));
-                    return;
-                }
+            if (playerUnitsList.Count == 0 && playerUnits.childCount != 0)
+            {
+                skeletonController.setTarget(playerUnits.GetChild(Random.Range(0, playerUnits.childCount)));
+                return;
+            }
 
-                if(playerUnits.childCount == 0)
-                {
-                    skeletonController.setTarget(player.transform);
-                }
-
+            if (playerUnits.childCount == 0)
+            {
+                skeletonController.setTarget(player.transform);
             }
         }
 
@@ -96,5 +104,5 @@ public class unitMatcher : MonoBehaviour
         foreach (GameObject skeleton in skeletonList)
             setTarget(skeleton);
     }
-    
+
 }

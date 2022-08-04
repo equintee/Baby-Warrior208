@@ -26,7 +26,7 @@ public class unitController : MonoBehaviour
     private void Update()
     {
 
-        if (target != null)
+        if (target != null && isMovingToTarget)
         {
             transform.DOLookAt(target.position, 0f);
             rb.position = Vector3.MoveTowards(rb.position, target.position, moveSpeed * Time.deltaTime);
