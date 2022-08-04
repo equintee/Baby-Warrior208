@@ -8,6 +8,7 @@ using UnityEngine;
 public class enemyController : MonoBehaviour
 {
     [SerializeField] private Transform collectableManaParent;
+    public Transform unitSpawner;
     public GameObject enemyUnit;
     public GameObject enemyUnitParent;
     public int manaCostPerUnit;
@@ -22,7 +23,7 @@ public class enemyController : MonoBehaviour
     private float lowerBoundZ;
     private unitMatcher unitMatcher;
     private int mana = 0;
-    private bool spawningUnits;
+    private bool spawningUnits = false;
     void Start()
     {
         //Set movement bounds
@@ -41,35 +42,44 @@ public class enemyController : MonoBehaviour
         animator = transform.GetChild(0).GetComponent<Animator>();
         unitMatcher = FindObjectOfType<unitMatcher>();
 
-        moveToMana();
+        AIMovement();
         animator.SetTrigger("run");
     }
 
 
     private GameObject closestMana;
 
-    private void moveToMana()
+    private void AIMovement()
     {
-        if (closestMana == null && !findClosestMana() && !spawningUnits)
-        {
-            makeRandomMovement();
-            return;
-        }
 
-        if (!spawningUnits) { 
-            DOTween.Kill(rb);
-            Vector3 wayPoint = closestMana.transform.position;
-            wayPoint.y = 0;
-            transform.DOLookAt(wayPoint, 0f);
-            rb.DOMove(wayPoint, movementSpeed).SetSpeedBased().SetEase(Ease.Linear).OnComplete(() => moveToMana());
+        if (findClosestMana())
+        {
+            bool spawnUnits = (mana > manaCostPerUnit && UnityEngine.Random.Range(0, 100) > 60) ? true : false;
+            if (spawnUnits)
+                moveToSpawner();
+            else
+                patrol();
+
         }
+            
     }
 
-    private void makeRandomMovement()
+    private void moveToClosestMana()
     {
+        DOTween.Kill(rb);
+        Vector3 wayPoint = closestMana.transform.position;
+        wayPoint.y = 0;
+        transform.DOLookAt(wayPoint, 0f);
+        rb.DOMove(wayPoint, movementSpeed).SetSpeedBased().SetEase(Ease.Linear).OnComplete(() => AIMovement());
+    }
+
+    private void patrol()
+    {
+        DOTween.Kill(rb);
+
         Vector3 waypoint = new Vector3(UnityEngine.Random.Range(lowerBoundX, upperBoundX), 0, UnityEngine.Random.Range(lowerBoundZ, upperBoundZ));
         transform.DOLookAt(waypoint, 0f);
-        rb.DOMove(waypoint, movementSpeed).SetSpeedBased().SetEase(Ease.Linear).OnUpdate(() => { if (findClosestMana()) moveToMana(); }).OnComplete(() => moveToMana());
+        rb.DOMove(waypoint, movementSpeed).SetSpeedBased().SetEase(Ease.Linear).OnUpdate(() => { if (findClosestMana()) moveToClosestMana(); }).OnComplete(() => AIMovement());
         
     }
 
@@ -97,12 +107,18 @@ public class enemyController : MonoBehaviour
         mana += value;
     }
 
+    private void moveToSpawner()
+    {
+        DOTween.Kill(rb);
 
+        transform.DOLookAt(unitSpawner.position, 0f);
+        rb.DOMove(unitSpawner.position, movementSpeed).SetSpeedBased().SetEase(Ease.Linear);
+
+    }
     public async void spawnSkeletons(Vector3 spawnPosition)
     {
         DOTween.Kill(rb);
 
-        spawningUnits = true;
         while(mana >= manaCostPerUnit)
         {
             updateMana(-manaCostPerUnit);
@@ -110,10 +126,12 @@ public class enemyController : MonoBehaviour
             await Task.Delay(System.TimeSpan.FromSeconds(1f));
             GameObject spawnedSkeleton = Instantiate(enemyUnit, spawnPosition, Quaternion.identity, enemyUnitParent.transform);
             unitMatcher.enemyUnitsList.Add(spawnedSkeleton);
+            if (unitMatcher.enemyUnitsList.Count == 1)
+                unitMatcher.setTargetForAllUnits(unitMatcher.enemyUnitsList);
             unitMatcher.setTarget(spawnedSkeleton);
         }
 
-        spawningUnits = false;
+        AIMovement();
     }
 
 

@@ -86,7 +86,6 @@ public class playerController : MonoBehaviour
     {
         //Disable playerMovement
         setUpdate();
-
         while(playerMana >= manaCost)
         {
             updateMana(-manaCost);
@@ -94,6 +93,10 @@ public class playerController : MonoBehaviour
             await Task.Delay(System.TimeSpan.FromSeconds(1f));
             GameObject spawnedSkeleton = Instantiate(skeleton, spawnPosition, Quaternion.identity, playerUnits.transform);
             unitMatcher.playerUnitsList.Add(spawnedSkeleton);
+
+            if (unitMatcher.playerUnitsList.Count == 1)
+                unitMatcher.setTargetForAllUnits(unitMatcher.enemyUnitsList);
+
             unitMatcher.setTarget(spawnedSkeleton);
         }
         

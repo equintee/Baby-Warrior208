@@ -22,30 +22,6 @@ public class unitMatcher : MonoBehaviour
 
     }
 
-    private RaycastHit hit;
-    public void setTargets()
-    {
-        if(enemyUnitsList.Count == 0)
-        {
-            foreach(GameObject playerSkeleton in playerUnitsList)
-            {
-                playerSkeleton.GetComponent<unitController>().setTarget(enemy.transform);
-            }
-            return;
-        }
-        else
-        {
-            foreach(GameObject playerSkeleton in playerUnitsList)
-            {
-                if(Physics.SphereCast(playerSkeleton.transform.position, 10, transform.forward, out hit))
-                {
-                    playerSkeleton.GetComponent<unitController>().setTarget(hit.collider.transform);
-                    hit.collider.transform.GetComponent<unitController>().setTarget(playerSkeleton.transform);
-                }
-            }
-        }
-
-    }
 
     private Collider[] hitList;
     public void setTarget(GameObject skeleton, bool isEnemy = false)
@@ -112,6 +88,13 @@ public class unitMatcher : MonoBehaviour
 
         skeletonController.enabled = true;
 
+    }
+
+
+    public void setTargetForAllUnits(List<GameObject> skeletonList)
+    {
+        foreach (GameObject skeleton in skeletonList)
+            setTarget(skeleton);
     }
     
 }

@@ -8,5 +8,6 @@ public class playerSpawnPoint : MonoBehaviour
     {
         if(other.CompareTag("Player"))
             other.gameObject.GetComponent<playerController>().spawnSkeletons(transform.position);
+
     }
 }
