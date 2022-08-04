@@ -8,6 +8,7 @@ public class unitController : MonoBehaviour
 {
     public int hp;
     public int damage;
+    [HideInInspector] public bool isTargetBoss = false;
 
     private float moveSpeed;
     private Rigidbody rb;
@@ -15,6 +16,7 @@ public class unitController : MonoBehaviour
     [SerializeField]private Transform target;
     private bool isAlive = true;
     private unitMatcher unitMatcher;
+    
     private void Start()
     {
         moveSpeed = FindObjectOfType<unitMatcher>().unitSpeed;
@@ -45,6 +47,7 @@ public class unitController : MonoBehaviour
         }
         if (isMovingToTarget)
         {
+            target = (!isTargetBoss && target.GetComponent<unitController>().isAlive == false) ? null : target;
             transform.DOLookAt(target.position, 0f);
             rb.position = Vector3.MoveTowards(rb.position, target.position, moveSpeed * Time.deltaTime);
 

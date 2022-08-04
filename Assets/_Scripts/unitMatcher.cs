@@ -56,7 +56,8 @@ public class unitMatcher : MonoBehaviour
                     {
                         enemyUnitsList.Remove(collider.gameObject);
                         skeletonController.setTarget(collider.transform);
-                        return;
+                        skeletonController.GetComponent<unitController>().isTargetBoss = false;
+                        break;
                     }
                 }
             }
@@ -64,13 +65,13 @@ public class unitMatcher : MonoBehaviour
             if (enemyUnitsList.Count == 0 && enemyUnits.childCount != 0)
             {
                 skeletonController.setTarget(enemyUnits.GetChild(Random.Range(0, enemyUnits.childCount)));
-                return;
+                skeletonController.GetComponent<unitController>().isTargetBoss = false;
             }
 
             if (enemyUnits.childCount == 0)
             {
                 skeletonController.setTarget(enemy.transform);
-                return;
+                skeletonController.GetComponent<unitController>().isTargetBoss = true;
             }
         }
 
@@ -85,7 +86,8 @@ public class unitMatcher : MonoBehaviour
                     {
                         playerUnitsList.Remove(collider.gameObject);
                         skeletonController.setTarget(collider.transform);
-                        return;
+                        skeletonController.GetComponent<unitController>().isTargetBoss = false;
+                        break;
                     }
                 }
             }
@@ -93,12 +95,13 @@ public class unitMatcher : MonoBehaviour
             if (playerUnitsList.Count == 0 && playerUnits.childCount != 0)
             {
                 skeletonController.setTarget(playerUnits.GetChild(Random.Range(0, playerUnits.childCount)));
-                return;
+                skeletonController.GetComponent<unitController>().isTargetBoss = false;
             }
 
             if (playerUnits.childCount == 0)
             {
                 skeletonController.setTarget(player.transform);
+                skeletonController.GetComponent<unitController>().isTargetBoss = true;
             }
         }
 
