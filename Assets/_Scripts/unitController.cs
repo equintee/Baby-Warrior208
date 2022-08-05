@@ -9,12 +9,13 @@ public class unitController : MonoBehaviour
     public int hp;
     public int damage;
     [HideInInspector] public bool isTargetBoss = false;
+    [HideInInspector] public bool isAlive = true;
 
     private float moveSpeed;
     private Rigidbody rb;
     private Animator animator;
     [SerializeField]private Transform target;
-    private bool isAlive = true;
+    
     private unitMatcher unitMatcher;
     
     private void Start()
@@ -41,13 +42,17 @@ public class unitController : MonoBehaviour
                 unitMatcher.addSkeletonToList(unitMatcher.playerUnitsList, gameObject);
             if (transform.CompareTag("enemyUnit"))
                 unitMatcher.addSkeletonToList(unitMatcher.enemyUnitsList, gameObject);
-
             this.enabled = false;
             return;
         }
         if (isMovingToTarget)
-        {
-            target = (!isTargetBoss && target.GetComponent<unitController>().isAlive == false) ? null : target;
+        {   
+            if(!isTargetBoss && target.GetComponent<unitController>().isAlive == false)
+            {
+                target = null;
+                return;
+            }
+
             transform.DOLookAt(target.position, 0f);
             rb.position = Vector3.MoveTowards(rb.position, target.position, moveSpeed * Time.deltaTime);
 
@@ -67,7 +72,7 @@ public class unitController : MonoBehaviour
         rb.constraints = RigidbodyConstraints.FreezeAll;
         transform.DOLookAt(target.position, 0f);
         animator.SetTrigger("attack");
-        await Task.Delay(System.TimeSpan.FromSeconds(1.5f));
+        await Task.Delay(System.TimeSpan.FromSeconds(1f));
 
         target.GetComponent<unitController>().decrementHp(damage);
         bool isTargetDead = target.GetComponent<unitController>().animateGetHit();
@@ -101,6 +106,7 @@ public class unitController : MonoBehaviour
     public bool animateDeath()
     {
         isAlive = false;
+        unitMatcher.moveSkeletonToCorpse(gameObject);
 
         if (transform.CompareTag("playerUnit"))
             unitMatcher.playerUnitsList.Remove(gameObject);

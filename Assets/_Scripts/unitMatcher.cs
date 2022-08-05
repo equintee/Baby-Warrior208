@@ -7,12 +7,14 @@ public class unitMatcher : MonoBehaviour
     public float unitSpeed;
     public GameObject player;
     public GameObject enemy;
+    public Transform playerUnits;
+    public Transform enemyUnits;
+    public Transform corpse;
+
 
     [HideInInspector] public List<GameObject> playerUnitsList;
     [HideInInspector] public List<GameObject> enemyUnitsList;
 
-    public Transform playerUnits;
-    public Transform enemyUnits;
 
 
     void Awake()
@@ -33,6 +35,8 @@ public class unitMatcher : MonoBehaviour
 
     private void Update()
     {
+        removeDeadSkeletonsFromList();
+
         foreach (GameObject skeleton in playerUnitsList)
             setTarget(skeleton);
 
@@ -122,4 +126,19 @@ public class unitMatcher : MonoBehaviour
             list.Add(skeleton);
     }
 
+    public void removeDeadSkeletonsFromList()
+    {
+        foreach (GameObject skeleton in playerUnitsList)
+            if (skeleton.GetComponent<unitController>().isAlive == false)
+                playerUnitsList.Remove(skeleton);
+
+        foreach (GameObject skeleton in enemyUnitsList)
+            if (skeleton.GetComponent<unitController>().isAlive == false)
+                playerUnitsList.Remove(skeleton);
+    }
+
+    public void moveSkeletonToCorpse(GameObject skeleton)
+    {
+        skeleton.transform.parent = corpse;
+    }
 }

@@ -5,9 +5,12 @@ using UnityEngine;
 
 public class manaSpawner : MonoBehaviour
 {
+    public int spawnInterval;
+    public int maximumSpawnCount;
+
     public GameObject manaPrefab;
 
-
+    private int counter = 0;
     private float upperBoundX;
     private float lowerBoundX;
     private float upperBoundZ;
@@ -28,12 +31,25 @@ public class manaSpawner : MonoBehaviour
         spawnMana();
     }
 
+    private float deltaTime = 0f;
+    private void Update()
+    {
+        deltaTime += Time.deltaTime;
+        if (deltaTime >= spawnInterval)
+            spawnMana();
+    }
+
+    private Collider[] hit;
     private void spawnMana()
     {
+        deltaTime = 0f;
+        if (counter == maximumSpawnCount)
+            return;
         Vector3 spawnPoint = new Vector3(Random.Range(lowerBoundX, upperBoundX), 0.5f, Random.Range(lowerBoundZ, upperBoundZ));
-        Transform spawnedMana = Instantiate(manaPrefab, spawnPoint, Quaternion.identity, transform).transform.GetChild(0);
-        spawnedMana.DOMoveY(spawnedMana.position.y + 1, 0.5f).SetEase(Ease.OutQuart).SetLoops(-1, LoopType.Yoyo);
-        spawnedMana.DORotate(new Vector3(90, 360, 0), 2f, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(-1);
-        Invoke("spawnMana", 1f);
+        while (Physics.OverlapSphere(spawnPoint, 1f, layerMask: Physics.AllLayers ,queryTriggerInteraction: QueryTriggerInteraction.Collide).Length > 0)
+            spawnPoint = new Vector3(Random.Range(lowerBoundX, upperBoundX), 0.5f, Random.Range(lowerBoundZ, upperBoundZ));
+
+        counter++;
+        Instantiate(manaPrefab, spawnPoint, Quaternion.identity, transform).transform.GetChild(0);
     }
 }
