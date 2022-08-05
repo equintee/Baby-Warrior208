@@ -369,8 +369,8 @@ Transform:
   m_Children:
   - {fileID: 728387842}
   - {fileID: 1922538978}
-  - {fileID: 1003846118}
   - {fileID: 1001926060}
+  - {fileID: 1003846118}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -862,7 +862,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 373812467}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1003846119
 MonoBehaviour:
@@ -1653,7 +1653,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4398646192631565608, guid: 76dfe82f71534ea41ba4b53f38cfdb1c, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4398646192631565608, guid: 76dfe82f71534ea41ba4b53f38cfdb1c, type: 3}
       propertyPath: m_LocalScale.x
@@ -1669,15 +1669,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4398646192631565608, guid: 76dfe82f71534ea41ba4b53f38cfdb1c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -9.13
+      value: -9.130006
       objectReference: {fileID: 0}
     - target: {fileID: 4398646192631565608, guid: 76dfe82f71534ea41ba4b53f38cfdb1c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.168
+      value: 0.16800696
       objectReference: {fileID: 0}
     - target: {fileID: 4398646192631565608, guid: 76dfe82f71534ea41ba4b53f38cfdb1c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 8.67
+      value: 8.670016
       objectReference: {fileID: 0}
     - target: {fileID: 4398646192631565608, guid: 76dfe82f71534ea41ba4b53f38cfdb1c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2033,6 +2033,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 373812467}
     m_Modifications:
+    - target: {fileID: 176570162056319958, guid: 2105e67cb0e37c5428d739c3860a7926, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3714251010775014783, guid: 2105e67cb0e37c5428d739c3860a7926, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -2079,7 +2083,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4089403912527873989, guid: 2105e67cb0e37c5428d739c3860a7926, type: 3}
       propertyPath: m_Name
-      value: Capsul
+      value: playerSpawnPoint
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7832844461456905327, guid: 2105e67cb0e37c5428d739c3860a7926, type: 3}
