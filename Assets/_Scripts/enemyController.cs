@@ -42,6 +42,9 @@ public class enemyController : MonoBehaviour
         animator = transform.GetChild(0).GetComponent<Animator>();
         unitMatcher = FindObjectOfType<unitMatcher>();
 
+        //Tags to initial enemyUnits
+        foreach (Transform enemyUnit in enemyUnitParent.transform)
+            enemyUnit.tag = "enemyUnit";
         AIMovement();
         animator.SetTrigger("run");
     }
@@ -125,6 +128,7 @@ public class enemyController : MonoBehaviour
             animator.SetTrigger("spawnSkeleton");
             await Task.Delay(System.TimeSpan.FromSeconds(1f));
             GameObject spawnedSkeleton = Instantiate(enemyUnit, spawnPosition, Quaternion.identity, enemyUnitParent.transform);
+            spawnedSkeleton.tag = "enemyUnit";
             unitMatcher.enemyUnitsList.Add(spawnedSkeleton);
             if (unitMatcher.enemyUnitsList.Count == 1)
                 unitMatcher.setTargetForAllUnits(unitMatcher.playerUnitsList);

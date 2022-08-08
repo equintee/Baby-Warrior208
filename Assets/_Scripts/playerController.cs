@@ -2,8 +2,18 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+
+[System.Serializable]
+public struct unitStats
+{
+    public int health;
+    public int manaCost;
+    public GameObject unitPrefab;
+}
+
 
 public class playerController : MonoBehaviour
 {
@@ -11,9 +21,11 @@ public class playerController : MonoBehaviour
     public float rotationSpeed;
     public Joystick joystick;
     public Transform playField;
+    public List<unitStats> unitStats;
     public GameObject skeleton;
     public Transform playerUnits;
     public GameObject manaBar;
+    public TextMeshProUGUI goldText;
     public int manaCost;
     private unitMatcher unitMatcher;
 
@@ -24,6 +36,7 @@ public class playerController : MonoBehaviour
     private Transform playerModel;
     private Rigidbody rb;
     private int playerMana = 50;
+    private int playerGold = 0;
 
 
     private float borderX = 9.5f;
@@ -37,6 +50,9 @@ public class playerController : MonoBehaviour
         animator = playerModel.GetComponent<Animator>();
         rb = transform.GetComponent<Rigidbody>();
         unitMatcher = FindObjectOfType<unitMatcher>();
+
+        updateGoldText();
+        updateManaBar();
     }
 
     
@@ -82,7 +98,7 @@ public class playerController : MonoBehaviour
         this.enabled = !this.enabled;
     }
 
-    public async void spawnSkeletons(Vector3 spawnPosition)
+    public async void spawnSkeletons(Vector3 spawnPosition, int unitLevel)
     {
         //Disable playerMovement
         setUpdate();
@@ -91,7 +107,8 @@ public class playerController : MonoBehaviour
             updateMana(-manaCost);
             animator.SetTrigger("spawnSkeleton");
             await Task.Delay(System.TimeSpan.FromSeconds(1f));
-            GameObject spawnedSkeleton = Instantiate(skeleton, spawnPosition, Quaternion.identity, playerUnits.transform);
+            GameObject spawnedSkeleton = Instantiate(unitStats[unitLevel].unitPrefab, spawnPosition, Quaternion.identity, playerUnits.transform);
+            spawnedSkeleton.tag = "playerUnit";
             unitMatcher.playerUnitsList.Add(spawnedSkeleton);
 
             if (unitMatcher.playerUnitsList.Count == 1)
@@ -130,4 +147,14 @@ public class playerController : MonoBehaviour
         return borders;
     }
 
+    public void updateGold(int value)
+    {
+        playerGold += value;
+        updateGoldText();
+    }
+
+    private void updateGoldText()
+    {
+        goldText.text = playerGold.ToString();
+    }
 }

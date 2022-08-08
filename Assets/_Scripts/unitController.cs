@@ -62,7 +62,6 @@ public class unitController : MonoBehaviour
             }
                 
         }
-
     }
 
     private async void animateHit(int damage)
@@ -111,7 +110,11 @@ public class unitController : MonoBehaviour
         if (transform.CompareTag("playerUnit"))
             unitMatcher.playerUnitsList.Remove(gameObject);
         if (transform.CompareTag("enemyUnit"))
+        {
             unitMatcher.enemyUnitsList.Remove(gameObject);
+            FindObjectOfType<playerController>().updateGold(unitMatcher.goldPerUnit);
+        }
+            
 
         GetComponent<BoxCollider>().enabled = false;
         animator.SetTrigger("death");

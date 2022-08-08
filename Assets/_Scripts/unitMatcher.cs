@@ -5,6 +5,7 @@ using UnityEngine;
 public class unitMatcher : MonoBehaviour
 {
     public float unitSpeed;
+    public int goldPerUnit;
     public GameObject player;
     public GameObject enemy;
     public Transform playerUnits;
