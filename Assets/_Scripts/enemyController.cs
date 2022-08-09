@@ -52,7 +52,7 @@ public class enemyController : MonoBehaviour
     private void AIMovement()
     {
 
-        if (findClosestMana())
+        if (true)
         {
             bool spawnUnits = (mana > manaCostPerUnit && UnityEngine.Random.Range(0, 100) > 60) ? true : false;
             if (spawnUnits)
