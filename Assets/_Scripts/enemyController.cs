@@ -13,7 +13,9 @@ public class enemyController : MonoBehaviour
     public GameObject enemyUnitParent;
     public int manaCostPerUnit;
 
+    public List<unitStats> unitStats;
 
+    private List<Transform> enemySpawners;
     private float movementSpeed;
     private Rigidbody rb;
     private Animator animator;
@@ -23,7 +25,6 @@ public class enemyController : MonoBehaviour
     private float lowerBoundZ;
     private unitMatcher unitMatcher;
     private int mana = 0;
-    private bool spawningUnits = false;
     void Start()
     {
         //Set movement bounds
@@ -41,7 +42,11 @@ public class enemyController : MonoBehaviour
         movementSpeed = playerController.movementSpeed;
         animator = transform.GetChild(0).GetComponent<Animator>();
         unitMatcher = FindObjectOfType<unitMatcher>();
-        
+
+        enemySpawners = new List<Transform>();
+        foreach (Transform spawner in GameObject.Find("enemySpawners").transform)
+            enemySpawners.Add(spawner);
+
         AIMovement();
         animator.SetTrigger("run");
     }
@@ -52,16 +57,12 @@ public class enemyController : MonoBehaviour
     private void AIMovement()
     {
 
-        if (true)
-        {
-            bool spawnUnits = (mana > manaCostPerUnit && UnityEngine.Random.Range(0, 100) > 60) ? true : false;
-            if (spawnUnits)
-                moveToSpawner();
-            else
-                patrol();
+        bool spawnUnits = UnityEngine.Random.Range(0, 100) > 60 ? true : false;
+        if (spawnUnits)
+            moveToSpawner();
+        else
+            patrol();
 
-        }
-            
     }
 
     private void moveToClosestMana()
@@ -80,24 +81,24 @@ public class enemyController : MonoBehaviour
         Vector3 waypoint = new Vector3(UnityEngine.Random.Range(lowerBoundX, upperBoundX), 0, UnityEngine.Random.Range(lowerBoundZ, upperBoundZ));
         transform.DOLookAt(waypoint, 0f);
         rb.DOMove(waypoint, movementSpeed).SetSpeedBased().SetEase(Ease.Linear).OnUpdate(() => { if (findClosestMana()) moveToClosestMana(); }).OnComplete(() => AIMovement());
-        
+
     }
 
     private bool findClosestMana()
     {
         float minDistance = 9999;
-        foreach(Transform mana in collectableManaParent)
+        foreach (Transform mana in collectableManaParent)
         {
             Vector3 distanceVector = mana.transform.position - transform.position;
             float distance = distanceVector.sqrMagnitude;
-            if(distanceVector.sqrMagnitude < minDistance)
+            if (distanceVector.sqrMagnitude < minDistance)
             {
                 closestMana = mana.gameObject;
                 minDistance = distanceVector.sqrMagnitude;
             }
         }
 
-        return minDistance != 9999;     
+        return minDistance != 9999;
 
     }
 
@@ -110,30 +111,45 @@ public class enemyController : MonoBehaviour
     private void moveToSpawner()
     {
         DOTween.Kill(rb);
+        int spawnerIndex = setSpawnerTarget();
+        if (spawnerIndex == -1)
+        {
+            AIMovement();
+            return;
+        }
 
-        transform.DOLookAt(unitSpawner.position, 0f);
-        rb.DOMove(unitSpawner.position, movementSpeed).SetSpeedBased().SetEase(Ease.Linear);
+        spawnerIndex = UnityEngine.Random.Range(0, spawnerIndex + 1);       
+        transform.DOLookAt(enemySpawners[spawnerIndex].position, 0f);
+        rb.DOMove(enemySpawners[spawnerIndex].position, movementSpeed).SetSpeedBased().SetEase(Ease.Linear);
 
     }
-    public async void spawnSkeletons(Vector3 spawnPosition)
+    public async void spawnSkeletons(Vector3 spawnPosition, int spawnerLevel)
     {
         DOTween.Kill(rb);
 
-        while(mana >= manaCostPerUnit)
+        while (mana >= unitStats[spawnerLevel].manaCost)
         {
             updateMana(-manaCostPerUnit);
             animator.SetTrigger("spawnSkeleton");
             await Task.Delay(System.TimeSpan.FromSeconds(1f));
-            GameObject spawnedSkeleton = Instantiate(enemyUnit, spawnPosition, Quaternion.identity, enemyUnitParent.transform);
+            GameObject spawnedSkeleton = Instantiate(unitStats[spawnerLevel].unitPrefab, spawnPosition, Quaternion.identity, enemyUnitParent.transform);
             spawnedSkeleton.tag = "enemyUnit";
             unitMatcher.enemyUnitsList.Add(spawnedSkeleton);
-            /*if (unitMatcher.enemyUnitsList.Count == 1)
-                unitMatcher.setTargetForAllUnits(unitMatcher.playerUnitsList);*/
             unitMatcher.addSkeletonToList(unitMatcher.enemyUnitsList, spawnedSkeleton);
         }
 
         AIMovement();
     }
 
+    public int setSpawnerTarget()
+    {
+        if (unitStats.Count == 1)
+            return 1;
 
+        for (int i = unitStats.Count - 1; i >= 0; i++)
+            if (mana >= unitStats[i].manaCost)
+                return i;
+
+        return -1;
+    }
 }
