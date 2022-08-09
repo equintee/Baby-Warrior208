@@ -10,7 +10,7 @@ public class manaSpawner : MonoBehaviour
 
     public GameObject manaPrefab;
 
-    private int counter = 0;
+    public int counter = 0;
     private float upperBoundX;
     private float lowerBoundX;
     private float upperBoundZ;

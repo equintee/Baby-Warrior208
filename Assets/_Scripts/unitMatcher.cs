@@ -38,10 +38,10 @@ public class unitMatcher : MonoBehaviour
     {
         removeDeadSkeletonsFromList();
 
-        foreach (GameObject skeleton in playerUnitsList)
+        foreach (GameObject skeleton in playerUnitsList.ToArray())
             setTarget(skeleton);
 
-        foreach (GameObject skeleton in enemyUnitsList)
+        foreach (GameObject skeleton in enemyUnitsList.ToArray())
             setTarget(skeleton);
     }
 
@@ -49,7 +49,8 @@ public class unitMatcher : MonoBehaviour
     public void setTarget(GameObject skeleton)
     {
         unitController skeletonController = skeleton.GetComponent<unitController>();
-
+        List<GameObject> playerUnitsListTemp = new List<GameObject>(playerUnitsList);
+        List<GameObject> enemyUnitsListTemp = new List<GameObject>(enemyUnitsList);
         if (skeleton.CompareTag("playerUnit"))
         {
             if (enemyUnitsList.Count > 0)
@@ -57,13 +58,14 @@ public class unitMatcher : MonoBehaviour
                 hitList = Physics.OverlapSphere(skeleton.transform.position, 20);
                 foreach (Collider collider in hitList)
                 {
-                    if (enemyUnitsList.Contains(collider.gameObject))
+                    if (enemyUnitsListTemp.Contains(collider.gameObject))
                     {
                         enemyUnitsList.Remove(collider.gameObject);
                         skeletonController.setTarget(collider.transform);
                         skeletonController.GetComponent<unitController>().isTargetBoss = false;
                         break;
                     }
+
                 }
             }
 
@@ -87,7 +89,7 @@ public class unitMatcher : MonoBehaviour
                 hitList = Physics.OverlapSphere(skeleton.transform.position, 20);
                 foreach (Collider collider in hitList)
                 {
-                    if (playerUnitsList.Contains(collider.gameObject))
+                    if (playerUnitsListTemp.Contains(collider.gameObject))
                     {
                         playerUnitsList.Remove(collider.gameObject);
                         skeletonController.setTarget(collider.transform);
@@ -129,11 +131,11 @@ public class unitMatcher : MonoBehaviour
 
     public void removeDeadSkeletonsFromList()
     {
-        foreach (GameObject skeleton in playerUnitsList)
+        foreach (GameObject skeleton in playerUnitsList.ToArray())
             if (skeleton.GetComponent<unitController>().isAlive == false)
                 playerUnitsList.Remove(skeleton);
 
-        foreach (GameObject skeleton in enemyUnitsList)
+        foreach (GameObject skeleton in enemyUnitsList.ToArray())
             if (skeleton.GetComponent<unitController>().isAlive == false)
                 playerUnitsList.Remove(skeleton);
     }

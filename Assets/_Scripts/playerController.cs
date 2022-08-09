@@ -111,8 +111,8 @@ public class playerController : MonoBehaviour
             spawnedSkeleton.tag = "playerUnit";
             unitMatcher.playerUnitsList.Add(spawnedSkeleton);
 
-            if (unitMatcher.playerUnitsList.Count == 1)
-                unitMatcher.setTargetForAllUnits(unitMatcher.enemyUnitsList);
+            /*if (unitMatcher.playerUnitsList.Count == 1)
+                unitMatcher.setTargetForAllUnits(unitMatcher.enemyUnitsList);*/
 
             unitMatcher.addSkeletonToList(unitMatcher.playerUnitsList, spawnedSkeleton);
         }

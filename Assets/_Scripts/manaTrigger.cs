@@ -7,6 +7,7 @@ public class manaTrigger : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
+        FindObjectOfType<manaSpawner>().counter--;
         DOTween.Kill(transform.GetChild(0));
         if (other.transform.CompareTag("Player"))
             other.GetComponent<playerController>().updateMana(10);
