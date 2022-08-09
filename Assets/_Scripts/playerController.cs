@@ -116,7 +116,10 @@ public class playerController : MonoBehaviour
 
             unitMatcher.addSkeletonToList(unitMatcher.playerUnitsList, spawnedSkeleton);
         }
-        
+
+        if (touch.phase == TouchPhase.Moved)
+            animator.SetTrigger("run");
+
         Invoke("setUpdate", 1f);
     }
 
