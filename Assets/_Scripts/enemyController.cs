@@ -41,10 +41,7 @@ public class enemyController : MonoBehaviour
         movementSpeed = playerController.movementSpeed;
         animator = transform.GetChild(0).GetComponent<Animator>();
         unitMatcher = FindObjectOfType<unitMatcher>();
-
-        //Tags to initial enemyUnits
-        foreach (Transform enemyUnit in enemyUnitParent.transform)
-            enemyUnit.tag = "enemyUnit";
+        
         AIMovement();
         animator.SetTrigger("run");
     }

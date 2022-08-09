@@ -29,8 +29,8 @@ public class unitMatcher : MonoBehaviour
         foreach (Transform skeleton in enemyUnits)
             enemyUnitsList.Add(skeleton.gameObject);
 
-        setTargetForAllUnits(playerUnitsList);
-        setTargetForAllUnits(enemyUnitsList);
+        foreach (Transform enemyUnit in enemyUnits)
+            enemyUnit.tag = "enemyUnit";
 
     }
 
@@ -45,34 +45,19 @@ public class unitMatcher : MonoBehaviour
             setTarget(skeleton);
     }
 
-    private Collider[] hitList;
     public void setTarget(GameObject skeleton)
     {
         unitController skeletonController = skeleton.GetComponent<unitController>();
-        List<GameObject> playerUnitsListTemp = new List<GameObject>(playerUnitsList);
-        List<GameObject> enemyUnitsListTemp = new List<GameObject>(enemyUnitsList);
+
+        if (skeletonController.isTargetNullOrBoss() == false)
+            return;
+
+
         if (skeleton.CompareTag("playerUnit"))
         {
             if (enemyUnitsList.Count > 0)
             {
-                hitList = Physics.OverlapSphere(skeleton.transform.position, 20);
-                foreach (Collider collider in hitList)
-                {
-                    if (enemyUnitsListTemp.Contains(collider.gameObject))
-                    {
-                        enemyUnitsList.Remove(collider.gameObject);
-                        skeletonController.setTarget(collider.transform);
-                        skeletonController.GetComponent<unitController>().isTargetBoss = false;
-                        break;
-                    }
-
-                }
-            }
-
-            if (enemyUnitsList.Count == 0 && enemyUnits.childCount != 0)
-            {
-                skeletonController.setTarget(enemyUnits.GetChild(Random.Range(0, enemyUnits.childCount)));
-                skeletonController.GetComponent<unitController>().isTargetBoss = false;
+                skeletonController.setTarget(findClosestEnemy(enemyUnitsList.ToArray(), skeleton));
             }
 
             if (enemyUnits.childCount == 0)
@@ -86,23 +71,7 @@ public class unitMatcher : MonoBehaviour
         {
             if (playerUnitsList.Count > 0)
             {
-                hitList = Physics.OverlapSphere(skeleton.transform.position, 20);
-                foreach (Collider collider in hitList)
-                {
-                    if (playerUnitsListTemp.Contains(collider.gameObject))
-                    {
-                        playerUnitsList.Remove(collider.gameObject);
-                        skeletonController.setTarget(collider.transform);
-                        skeletonController.GetComponent<unitController>().isTargetBoss = false;
-                        break;
-                    }
-                }
-            }
-
-            if (playerUnitsList.Count == 0 && playerUnits.childCount != 0)
-            {
-                skeletonController.setTarget(playerUnits.GetChild(Random.Range(0, playerUnits.childCount)));
-                skeletonController.GetComponent<unitController>().isTargetBoss = false;
+                skeletonController.setTarget(findClosestEnemy(playerUnitsList.ToArray(), skeleton));
             }
 
             if (playerUnits.childCount == 0)
@@ -143,5 +112,21 @@ public class unitMatcher : MonoBehaviour
     public void moveSkeletonToCorpse(GameObject skeleton)
     {
         skeleton.transform.parent = corpse;
+    }
+
+    private Transform findClosestEnemy(GameObject[] enemyArray, GameObject skeleton)
+    {
+        float minDistance = 999999f;
+        Transform closestEnemy = null;
+        foreach(GameObject opponent in enemyArray)
+        {
+            float distance = Vector3.Distance(skeleton.transform.position, opponent.transform.position);
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                closestEnemy = opponent.transform;
+            }
+        }
+        return closestEnemy;
     }
 }

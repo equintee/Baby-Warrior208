@@ -35,16 +35,9 @@ public class unitController : MonoBehaviour
     private bool isMovingToTarget = true;
     private void Update()
     {
-
-        if (target == null)
-        {
-            if (transform.CompareTag("playerUnit"))
-                unitMatcher.addSkeletonToList(unitMatcher.playerUnitsList, gameObject);
-            if (transform.CompareTag("enemyUnit"))
-                unitMatcher.addSkeletonToList(unitMatcher.enemyUnitsList, gameObject);
-            this.enabled = false;
+        if (!target)
             return;
-        }
+
         if (isMovingToTarget)
         {   
             if(!isTargetBoss && target.GetComponent<unitController>().isAlive == false)
@@ -129,5 +122,8 @@ public class unitController : MonoBehaviour
         Destroy(gameObject);
     }
 
-
+    public bool isTargetNullOrBoss()
+    {
+        return !target || isTargetBoss;
+    }
 }

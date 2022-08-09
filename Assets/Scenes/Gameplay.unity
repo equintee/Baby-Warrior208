@@ -647,6 +647,7 @@ MonoBehaviour:
   spawnInterval: 1
   maximumSpawnCount: 10
   manaPrefab: {fileID: 7711517507451607440, guid: 31ad33d514da462409c67372ee58a7f2, type: 3}
+  counter: 0
 --- !u!1 &1023696278
 GameObject:
   m_ObjectHideFlags: 0
@@ -1142,7 +1143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 883a3fd0e337b274c80fa92471ede21e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitSpeed: 5
+  unitSpeed: 1
   goldPerUnit: 5
   player: {fileID: 245715719}
   enemy: {fileID: 1541495444}
@@ -1184,7 +1185,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collectableManaParent: {fileID: 1003846118}
   unitSpawner: {fileID: 1001926060}
-  enemyUnit: {fileID: 1661798686736646891, guid: b50ef84db81654c408a5b05090f20522, type: 3}
+  enemyUnit: {fileID: 4774761328359794169, guid: 43ba8adbeeed1e344ad9d1d163b0a548, type: 3}
   enemyUnitParent: {fileID: 565234280}
   manaCostPerUnit: 20
 --- !u!65 &1541495446
@@ -1392,7 +1393,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1713368840}
-  m_LocalRotation: {x: 0.54491353, y: 0.000000035404547, z: -0.000000023008461, w: 0.8384923}
+  m_LocalRotation: {x: 0.5449136, y: -0.0000000021400282, z: 0.0000000013907501, w: 0.8384923}
   m_LocalPosition: {x: 0, y: 37.9, z: -16.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1478,7 +1479,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1758361052}
-  m_LocalRotation: {x: 0.54491353, y: 0.000000035404547, z: -0.000000023008461, w: 0.8384923}
+  m_LocalRotation: {x: 0.5449136, y: -0.0000000021400282, z: 0.0000000013907501, w: 0.8384923}
   m_LocalPosition: {x: 0, y: 37.9, z: -16.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -2017,6 +2018,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 565234281}
     m_Modifications:
+    - target: {fileID: 4719004240860792482, guid: 43ba8adbeeed1e344ad9d1d163b0a548, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4774761328359794169, guid: 43ba8adbeeed1e344ad9d1d163b0a548, type: 3}
       propertyPath: m_Name
       value: level1_Stickman_Hit
