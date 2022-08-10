@@ -42,9 +42,9 @@ public class unitController : MonoBehaviour
         if (!target)
             return;
 
-        if(navMeshAgent.pathStatus == NavMeshPathStatus.PathComplete && target)
+        if(isTargetReached())
         {
-            Debug.Log("path finished");
+            animateHit(damage);
         }
             
 
@@ -54,11 +54,12 @@ public class unitController : MonoBehaviour
     {
         this.enabled = false;
         isMovingToTarget = false;
+        navMeshAgent.isStopped = true;
         rb.constraints = RigidbodyConstraints.FreezeAll;
         transform.DOLookAt(target.position, 0f);
         animator.SetTrigger("attack");
         await Task.Delay(System.TimeSpan.FromSeconds(1f));
-
+        navMeshAgent.isStopped = false;
         target.GetComponent<unitController>().decrementHp(damage);
         bool isTargetDead = target.GetComponent<unitController>().animateGetHit();
         target = isTargetDead ? null : target;
@@ -91,6 +92,7 @@ public class unitController : MonoBehaviour
     public bool animateDeath()
     {
         isAlive = false;
+        navMeshAgent.isStopped = true;
         unitMatcher.moveSkeletonToCorpse(gameObject);
 
         if (transform.CompareTag("playerUnit"))
@@ -134,7 +136,10 @@ public class unitController : MonoBehaviour
     {
         navMeshAgent.isStopped = false;
         navMeshAgent.SetDestination(target.position);
-        Debug.Log(navMeshAgent.path);
     }
 
+    public bool isTargetReached()
+    {
+        return Vector3.Distance(transform.position, target.position) <= 2f;
+    }
 }

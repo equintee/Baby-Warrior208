@@ -29,6 +29,7 @@ public class enemySpawner : MonoBehaviour
     void Start()
     {
         spawnTime = generateRandomSpawnTime();
+        spawnUnit(initialEnemyUnitCount);
     }
 
     private float deltaTime = 0f;
@@ -38,7 +39,7 @@ public class enemySpawner : MonoBehaviour
             return;
 
 
-        if (deltaTime >= 1f)
+        if (deltaTime >= spawnTime)
             await spawnUnit(2);
         else
             deltaTime += Time.deltaTime;
@@ -63,6 +64,7 @@ public class enemySpawner : MonoBehaviour
             await Task.Delay(System.TimeSpan.FromSeconds(0.5f));
         }
 
+        spawnTime = generateRandomSpawnTime();
         spawningUnits = false;
         deltaTime = 0f;
     }
