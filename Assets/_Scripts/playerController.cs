@@ -19,26 +19,26 @@ public class playerController : MonoBehaviour
 {
     public float movementSpeed;
     public float rotationSpeed;
-    public Joystick joystick;
     public List<unitStats> unitStats;
     public Transform playerUnits;
+    public Transform playerBridgeExit;
+    public Joystick joystick;
     public GameObject manaBar;
     public TextMeshProUGUI goldText;
     public int manaCost;
     private unitMatcher unitMatcher;
 
-    private Vector3 horizontalMovement;
-    private Vector3 verticalMovement;
     private Animator animator;
-    private Touch touch;
     private Transform playerModel;
     private Rigidbody rb;
     private int playerMana = 50;
     private int playerGold = 0;
 
 
-    private float borderX = 9.5f;
-    private float borderZ = 9.5f;
+    private float borderMaxX = 30f;
+    private float borderMinX = 12f;
+    private float borderMaxZ = 9f;
+    private float borderMinZ = -9f;
 
 
 
@@ -64,7 +64,7 @@ public class playerController : MonoBehaviour
     {
         if (Input.touchCount > 0)
         {
-            touch = Input.GetTouch(0);
+            Touch touch = Input.GetTouch(0);
             if (touch.phase == TouchPhase.Began)
                 animator.SetTrigger("run");
             if (touch.phase == TouchPhase.Ended)
@@ -72,23 +72,23 @@ public class playerController : MonoBehaviour
         }
 
         //Fixable
-        Vector3 rotation = new Vector3(0, (Mathf.Atan2(joystick.Vertical, joystick.Horizontal) * 180 / Mathf.PI * -1) + 90, 0);
+        Vector3 rotation = new Vector3(0, (Mathf.Atan2(joystick.Vertical, joystick.Horizontal) * 180 / Mathf.PI * -1), 0);
         playerModel.eulerAngles = rotation;
 
-        verticalMovement = Vector3.forward * movementSpeed * Time.fixedDeltaTime * joystick.Vertical;
-        horizontalMovement = Vector3.right * movementSpeed * Time.fixedDeltaTime * joystick.Horizontal;
+        Vector3 verticalMovement = Vector3.left * movementSpeed * Time.fixedDeltaTime * joystick.Vertical;
+        Vector3 horizontalMovement = Vector3.forward * movementSpeed * Time.fixedDeltaTime * joystick.Horizontal;
 
         rb.MovePosition(verticalMovement + horizontalMovement + transform.position);
 
-        if (rb.position.x > borderX)
-            rb.position = new Vector3(borderX, 0, rb.position.z);
-        if (-1 * borderX > rb.position.x)
-            rb.position = new Vector3(-1 * borderX, 0, rb.position.z);
+        if (rb.position.x > borderMaxX)
+            rb.position = new Vector3(borderMaxX, 0, rb.position.z);
+        if (borderMinX > rb.position.x)
+            rb.position = new Vector3(borderMinX, 0, rb.position.z);
 
-        if (rb.position.z > borderZ)
-            rb.position = new Vector3(rb.position.x, 0, borderZ);
-        if (-1 * borderZ > rb.position.z)
-            rb.position = new Vector3(rb.position.x, 0, borderZ * -1);
+        if (rb.position.z > borderMaxZ)
+            rb.position = new Vector3(rb.position.x, 0, borderMaxZ);
+        if (borderMinZ > rb.position.z)
+            rb.position = new Vector3(rb.position.x, 0, borderMinZ);
     }
 
     
@@ -101,19 +101,14 @@ public class playerController : MonoBehaviour
     {
         //Disable playerMovement
         setUpdate();
-        while(playerMana >= manaCost)
+        while(playerMana >= unitStats[unitLevel].manaCost)
         {
-            updateMana(-manaCost);
+            updateMana(-unitStats[unitLevel].manaCost);
             animator.SetTrigger("spawnSkeleton");
             await Task.Delay(System.TimeSpan.FromSeconds(1f));
             GameObject spawnedSkeleton = Instantiate(unitStats[unitLevel].unitPrefab, spawnPosition, Quaternion.identity, playerUnits.transform);
             spawnedSkeleton.tag = "playerUnit";
-            unitMatcher.playerUnitsList.Add(spawnedSkeleton);
-
-            /*if (unitMatcher.playerUnitsList.Count == 1)
-                unitMatcher.setTargetForAllUnits(unitMatcher.enemyUnitsList);*/
-
-            unitMatcher.addSkeletonToList(unitMatcher.playerUnitsList, spawnedSkeleton);
+            spawnedSkeleton.GetComponent<unitController>().moveToBridgeExit(playerBridgeExit);
         }
 
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
@@ -143,8 +138,8 @@ public class playerController : MonoBehaviour
     public float[] getBorders()
     {
         float[] borders = new float[2]; //X,Z
-        borders[0] = borderX;
-        borders[1] = borderZ;
+        borders[0] = borderMinZ;
+        borders[1] = borderMaxZ;
 
         return borders;
     }

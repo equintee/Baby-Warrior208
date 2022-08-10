@@ -17,16 +17,14 @@ public class unitController : MonoBehaviour
     [SerializeField]private Transform target;
     
     private unitMatcher unitMatcher;
-    
-    private void Start()
+
+    private void Awake()
     {
         moveSpeed = FindObjectOfType<unitMatcher>().unitSpeed;
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         unitMatcher = transform.parent.parent.GetComponent<unitMatcher>();
-
     }
-
     public void setTarget(Transform target)
     {
         this.target = target;
@@ -126,5 +124,15 @@ public class unitController : MonoBehaviour
     public bool isTargetNullOrBoss()
     {
         return !target || isTargetBoss;
+    }
+
+    public void moveToBridgeExit(Transform bridgeExit)
+    {
+        transform.DOLookAt(bridgeExit.transform.position, 0f);
+        transform.DOMove(bridgeExit.transform.position, moveSpeed).SetSpeedBased().SetEase(Ease.Linear).OnComplete(() =>
+        {
+            unitMatcher.addSkeletonToList(unitMatcher.playerUnitsList, gameObject);
+            this.enabled = true;
+        });
     }
 }
