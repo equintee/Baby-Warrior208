@@ -20,9 +20,7 @@ public class playerController : MonoBehaviour
     public float movementSpeed;
     public float rotationSpeed;
     public Joystick joystick;
-    public Transform playField;
     public List<unitStats> unitStats;
-    public GameObject skeleton;
     public Transform playerUnits;
     public GameObject manaBar;
     public TextMeshProUGUI goldText;
@@ -53,6 +51,7 @@ public class playerController : MonoBehaviour
 
         updateGoldText();
         updateManaBar();
+
     }
 
     

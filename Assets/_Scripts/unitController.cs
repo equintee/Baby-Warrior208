@@ -24,6 +24,7 @@ public class unitController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         unitMatcher = transform.parent.parent.GetComponent<unitMatcher>();
+
     }
 
     public void setTarget(Transform target)
