@@ -716,9 +716,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5262610706004983619}
   - component: {fileID: 4719004240860792482}
-  - component: {fileID: 1252923346638450105}
   - component: {fileID: 1500095135029233789}
   - component: {fileID: 6873803241431665041}
+  - component: {fileID: 7663058594392751907}
   m_Layer: 6
   m_Name: level1_Stickman_Hit Variant
   m_TagString: Untagged
@@ -758,19 +758,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
---- !u!65 &1252923346638450105
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4774761328359794169}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &1500095135029233789
 Animator:
   serializedVersion: 3
@@ -807,6 +794,28 @@ MonoBehaviour:
   isTargetBoss: 0
   isAlive: 1
   target: {fileID: 0}
+--- !u!195 &7663058594392751907
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4774761328359794169}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &4976009731042142924
 GameObject:
   m_ObjectHideFlags: 0

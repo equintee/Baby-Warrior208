@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class unitController : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class unitController : MonoBehaviour
     [SerializeField]private Transform target;
     
     private unitMatcher unitMatcher;
+    private NavMeshAgent navMeshAgent;
 
     private void Awake()
     {
@@ -24,11 +26,14 @@ public class unitController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         unitMatcher = transform.parent.parent.GetComponent<unitMatcher>();
+
+        navMeshAgent = GetComponent<NavMeshAgent>();
+        navMeshAgent.speed = moveSpeed;
     }
     public void setTarget(Transform target)
     {
         this.target = target;
-        this.enabled = true;
+        moveToTarget();
     }
 
     private bool isMovingToTarget = true;
@@ -37,23 +42,12 @@ public class unitController : MonoBehaviour
         if (!target)
             return;
 
-        if (isMovingToTarget)
-        {   
-            if(!isTargetBoss && target.GetComponent<unitController>().isAlive == false)
-            {
-                target = null;
-                return;
-            }
-
-            transform.DOLookAt(target.position, 0f);
-            rb.position = Vector3.MoveTowards(rb.position, target.position, moveSpeed * Time.deltaTime);
-
-            if (Vector3.Distance(rb.position, target.position) < 1f)
-            {
-                animateHit(damage);
-            }
-                
+        if(navMeshAgent.pathStatus == NavMeshPathStatus.PathComplete && target)
+        {
+            Debug.Log("path finished");
         }
+            
+
     }
 
     private async void animateHit(int damage)
@@ -135,4 +129,12 @@ public class unitController : MonoBehaviour
             this.enabled = true;
         });
     }
+
+    public void moveToTarget()
+    {
+        navMeshAgent.isStopped = false;
+        navMeshAgent.SetDestination(target.position);
+        Debug.Log(navMeshAgent.path);
+    }
+
 }
