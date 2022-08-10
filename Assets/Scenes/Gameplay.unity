@@ -1230,7 +1230,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 883a3fd0e337b274c80fa92471ede21e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitSpeed: 1
+  unitSpeed: 5
   goldPerUnit: 5
   player: {fileID: 245715719}
   enemy: {fileID: 1541495444}
@@ -1275,8 +1275,8 @@ MonoBehaviour:
     manaCost: 1
     unitPrefab: {fileID: 4774761328359794169, guid: 43ba8adbeeed1e344ad9d1d163b0a548, type: 3}
   spawnProperties:
-    minimumSpawnTime: 0.3
-    maximumSpawnTime: 1
+    minimumSpawnTime: 99
+    maximumSpawnTime: 9999
     spawnLocation: {fileID: 1983050667}
     enemyUnitsParent: {fileID: 565234281}
   initialEnemyUnitCount: 1
