@@ -44,9 +44,9 @@ public class manaSpawner : MonoBehaviour
         deltaTime = 0f;
         if (counter == maximumSpawnCount)
             return;
-        Vector3 spawnPoint = new Vector3(Random.Range(lowerBoundX, upperBoundX), 0.5f, Random.Range(lowerBoundZ, upperBoundZ));
+        Vector3 spawnPoint = new Vector3(Random.Range(lowerBoundX, upperBoundX), 6.5f, Random.Range(lowerBoundZ, upperBoundZ));
         while (Physics.OverlapSphere(spawnPoint, 1f, layerMask: Physics.AllLayers ,queryTriggerInteraction: QueryTriggerInteraction.Collide).Length > 0)
-            spawnPoint = new Vector3(Random.Range(lowerBoundX, upperBoundX), 0.5f, Random.Range(lowerBoundZ, upperBoundZ));
+            spawnPoint = new Vector3(Random.Range(lowerBoundX, upperBoundX), 6.5f, Random.Range(lowerBoundZ, upperBoundZ));
 
         counter++;
         Instantiate(manaPrefab, spawnPoint, Quaternion.identity, transform).transform.GetChild(0);

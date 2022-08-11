@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -289,7 +289,7 @@ MonoBehaviour:
   rotationSpeed: 0
   unitStats:
   - health: 1
-    manaCost: 10
+    manaCost: 25
     unitPrefab: {fileID: 4774761328359794169, guid: 43ba8adbeeed1e344ad9d1d163b0a548, type: 3}
   playerUnits: {fileID: 1442558643}
   playerBridgeExit: {fileID: 1456924836}
@@ -1436,7 +1436,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 883a3fd0e337b274c80fa92471ede21e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitSpeed: 40
+  unitSpeed: 10
   goldPerUnit: 5
   player: {fileID: 245715719}
   playerUnits: {fileID: 1442558643}
@@ -1605,7 +1605,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4089403912527873989, guid: abd2c2d262a295c49ab6f9146d92161a, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: -5418311839825343718, guid: abd2c2d262a295c49ab6f9146d92161a, type: 3}
@@ -1634,7 +1634,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitStats:
   - health: 1
-    manaCost: 1
+    manaCost: 25
     unitPrefab: {fileID: 4774761328359794169, guid: 43ba8adbeeed1e344ad9d1d163b0a548, type: 3}
   spawnProperties:
     minimumSpawnTime: 99

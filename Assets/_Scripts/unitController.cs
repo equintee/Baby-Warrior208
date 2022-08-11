@@ -43,7 +43,7 @@ public class unitController : MonoBehaviour
         if (!target)
             return;
 
-        if(isTargetReached())
+        if(isTargetReached() && !isHitting)
         {
             animateHit(damage);
         }
