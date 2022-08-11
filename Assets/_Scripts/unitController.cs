@@ -9,7 +9,7 @@ public class unitController : MonoBehaviour
 {
     public int hp;
     public int damage;
-    [HideInInspector] public bool isTargetBoss = false;
+    [HideInInspector] public bool isTargetSpawner = false;
     [HideInInspector] public bool isAlive = true;
     [HideInInspector] public bool isHitting = false;
 
@@ -37,10 +37,9 @@ public class unitController : MonoBehaviour
         moveToTarget();
     }
 
-    private bool isMovingToTarget = true;
     private void Update()
     {
-        Debug.Log(navMeshAgent.isStopped);
+
         if (!target)
             return;
 
@@ -54,22 +53,29 @@ public class unitController : MonoBehaviour
 
     private async void animateHit(int damage)
     {
-        this.enabled = false;
-        isMovingToTarget = false;
         isHitting = true;
-        navMeshAgent.isStopped = true;
+     
+        navMeshAgent.ResetPath();
+        navMeshAgent.velocity = Vector3.zero;
+
         rb.constraints = RigidbodyConstraints.FreezeAll;
         transform.DOLookAt(target.position, 0f);
         animator.SetTrigger("attack");
-        await Task.Delay(System.TimeSpan.FromSeconds(1f));
-        navMeshAgent.isStopped = false;
-        target.GetComponent<unitController>().decrementHp(damage);
-        bool isTargetDead = target.GetComponent<unitController>().animateGetHit();
-        target = isTargetDead ? null : target;
-        isMovingToTarget = true;
-        isHitting = false;
+        await Task.Delay(System.TimeSpan.FromSeconds(1.250f));
+        
+        if(target && (target.CompareTag("enemyUnit") || target.CompareTag("playerUnit")))
+        {
+            target.GetComponent<unitController>().decrementHp(damage);
+            bool isTargetDead = target.GetComponent<unitController>().animateGetHit();
+            target = isTargetDead ? null : target;
+        }
+        else if(target.CompareTag("enemySpawner"))
+        {
+            target.gameObject.SetActive(false);
+        }
+        
         rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
-        this.enabled = true;
+        isHitting = false;
 
     }
 
@@ -80,7 +86,6 @@ public class unitController : MonoBehaviour
 
     public bool animateGetHit()
     {
-        isMovingToTarget = false;
         if (hp > 0)
         {
             animator.SetTrigger("getHit");
@@ -95,7 +100,6 @@ public class unitController : MonoBehaviour
     public bool animateDeath()
     {
         isAlive = false;
-        navMeshAgent.isStopped = true;
         unitMatcher.moveSkeletonToCorpse(gameObject);
 
         if (transform.CompareTag("playerUnit"))
@@ -122,17 +126,7 @@ public class unitController : MonoBehaviour
 
     public bool isTargetNullOrBoss()
     {
-        return !target || isTargetBoss;
-    }
-
-    public void moveToBridgeExit(Transform bridgeExit)
-    {
-        transform.DOLookAt(bridgeExit.transform.position, 0f);
-        transform.DOMove(bridgeExit.transform.position, moveSpeed).SetSpeedBased().SetEase(Ease.Linear).OnComplete(() =>
-        {
-            unitMatcher.addSkeletonToList(unitMatcher.playerUnitsList, gameObject);
-            this.enabled = true;
-        });
+        return !target || isTargetSpawner;
     }
 
     public void moveToTarget()
@@ -143,5 +137,10 @@ public class unitController : MonoBehaviour
     public bool isTargetReached()
     {
         return Vector3.Distance(transform.position, target.position) <= 2f;
+    }
+
+    public void resetPath()
+    {
+        navMeshAgent.ResetPath();
     }
 }

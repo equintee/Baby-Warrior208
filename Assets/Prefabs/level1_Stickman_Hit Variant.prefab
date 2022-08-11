@@ -791,7 +791,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: 1
   damage: 1
-  isTargetBoss: 0
+  isTargetSpawner: 0
   isAlive: 1
   isHitting: 0
   target: {fileID: 0}
@@ -809,7 +809,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 10
+  m_StoppingDistance: 2
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1

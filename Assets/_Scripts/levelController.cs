@@ -5,7 +5,7 @@ using UnityEngine;
 public class levelController : MonoBehaviour
 {
     [SerializeField] public unitMatcher unitMatcher;
-    [SerializeField] public enemySpawner enemyController;
+    [SerializeField] public enemyFieldController enemyFieldController;
     [SerializeField] public playerController playerController;
     [SerializeField] public manaSpawner manaSpawner;
 
@@ -16,12 +16,17 @@ public class levelController : MonoBehaviour
     {
         if(Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
         {
-            unitMatcher.enabled = true;
-            enemyController.enabled = true;
-            playerController.enabled = true;
-            manaSpawner.enabled = true;
-            this.enabled = false;
+            disableScripts();
             tapToStart.SetActive(false);
         }
+    }
+
+    private void disableScripts()
+    {
+        unitMatcher.enabled = true;
+        enemyFieldController.enabled = true;
+        playerController.enabled = true;
+        manaSpawner.enabled = true;
+        this.enabled = false;
     }
 }

@@ -7,7 +7,6 @@ public class unitMatcher : MonoBehaviour
     public float unitSpeed;
     public int goldPerUnit;
     public GameObject player;
-    public GameObject enemy;
     public Transform playerUnits;
     public Transform enemyUnits;
     public Transform corpse;
@@ -15,6 +14,7 @@ public class unitMatcher : MonoBehaviour
 
     [HideInInspector] public List<GameObject> playerUnitsList;
     [HideInInspector] public List<GameObject> enemyUnitsList;
+    [HideInInspector] public List<GameObject> enemySpawners;
 
 
 
@@ -32,6 +32,13 @@ public class unitMatcher : MonoBehaviour
         foreach (Transform enemyUnit in enemyUnits)
             enemyUnit.tag = "enemyUnit";
 
+        
+
+    }
+
+    private void Start()
+    {
+        enemySpawners = FindObjectOfType<enemyFieldController>().spawners;
     }
 
     private void Update()
@@ -49,22 +56,22 @@ public class unitMatcher : MonoBehaviour
     {
         unitController skeletonController = skeleton.GetComponent<unitController>();
 
-        if (skeletonController.isTargetNullOrBoss() == false && skeletonController.isHitting)
+        if (skeletonController.isHitting)
             return;
 
-
+        skeletonController.resetPath();
         if (skeleton.CompareTag("playerUnit"))
         {
 
             if (enemyUnitsList.Count > 0)
             {
-                skeletonController.setTarget(findClosestEnemy(enemyUnitsList.ToArray(), skeleton));
+                skeletonController.setTarget(findClosestTarget(enemyUnitsList.ToArray(), skeleton));
             }
 
             if (enemyUnits.childCount == 0)
             {
-                skeletonController.setTarget(enemy.transform);
-                skeletonController.GetComponent<unitController>().isTargetBoss = true;
+                skeletonController.setTarget(findClosestTarget(enemySpawners.ToArray(), skeleton));
+                skeletonController.GetComponent<unitController>().isTargetSpawner = true;
             }
         }
 
@@ -74,25 +81,18 @@ public class unitMatcher : MonoBehaviour
                 return;
             if (playerUnitsList.Count > 0)
             {
-                skeletonController.setTarget(findClosestEnemy(playerUnitsList.ToArray(), skeleton));
+                skeletonController.setTarget(findClosestTarget(playerUnitsList.ToArray(), skeleton));
             }
 
             if (playerUnits.childCount == 0)
             {
                 skeletonController.setTarget(player.transform);
-                skeletonController.GetComponent<unitController>().isTargetBoss = true;
+                skeletonController.GetComponent<unitController>().isTargetSpawner = true;
             }
         }
 
         skeletonController.enabled = true;
 
-    }
-
-
-    public void setTargetForAllUnits(List<GameObject> skeletonList)
-    {
-        foreach (GameObject skeleton in skeletonList)
-            setTarget(skeleton);
     }
 
     public void addSkeletonToList(List<GameObject> list, GameObject skeleton)
@@ -117,11 +117,18 @@ public class unitMatcher : MonoBehaviour
         skeleton.transform.parent = corpse;
     }
 
-    private Transform findClosestEnemy(GameObject[] enemyArray, GameObject skeleton)
+    public void removeBrokenCapsules()
+    {
+        foreach (GameObject spawners in enemySpawners.ToArray())
+            if (spawners.activeSelf == false)
+                enemySpawners.Remove(spawners);
+    }
+
+    private Transform findClosestTarget(GameObject[] targetArray, GameObject skeleton)
     {
         float minDistance = 999999f;
         Transform closestEnemy = null;
-        foreach(GameObject opponent in enemyArray)
+        foreach(GameObject opponent in targetArray)
         {
             float distance = Vector3.Distance(skeleton.transform.position, opponent.transform.position);
             if (distance < minDistance)

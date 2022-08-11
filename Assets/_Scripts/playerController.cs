@@ -80,7 +80,7 @@ public class playerController : MonoBehaviour
 
         rb.MovePosition(verticalMovement + horizontalMovement + transform.position);
 
-        if (rb.position.x > borderMaxX)
+       /* if (rb.position.x > borderMaxX)
             rb.position = new Vector3(borderMaxX, 0, rb.position.z);
         if (borderMinX > rb.position.x)
             rb.position = new Vector3(borderMinX, 0, rb.position.z);
@@ -88,7 +88,7 @@ public class playerController : MonoBehaviour
         if (rb.position.z > borderMaxZ)
             rb.position = new Vector3(rb.position.x, 0, borderMaxZ);
         if (borderMinZ > rb.position.z)
-            rb.position = new Vector3(rb.position.x, 0, borderMinZ);
+            rb.position = new Vector3(rb.position.x, 0, borderMinZ);*/
     }
 
     
@@ -139,9 +139,12 @@ public class playerController : MonoBehaviour
 
     public float[] getBorders()
     {
-        float[] borders = new float[2]; //X,Z
-        borders[0] = borderMinZ;
-        borders[1] = borderMaxZ;
+        float[] borders = new float[4]; //X,Z
+                
+        borders[0] = borderMinX;
+        borders[1] = borderMaxX;
+        borders[2] = borderMinZ;
+        borders[3] = borderMaxX;
 
         return borders;
     }

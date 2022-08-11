@@ -22,11 +22,10 @@ public class manaSpawner : MonoBehaviour
         playerController playerController = FindObjectOfType<playerController>();
         float[] borders = playerController.getBorders();
 
-        upperBoundX = borders[0];
-        upperBoundZ = borders[1];
-
-        lowerBoundX = -1 * upperBoundX;
-        lowerBoundZ = -1 * upperBoundZ;
+        lowerBoundX = borders[0];
+        upperBoundX = borders[1];
+        lowerBoundZ = borders[2];
+        upperBoundX = borders[3];
 
         spawnMana();
     }
