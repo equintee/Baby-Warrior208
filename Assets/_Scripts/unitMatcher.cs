@@ -49,12 +49,13 @@ public class unitMatcher : MonoBehaviour
     {
         unitController skeletonController = skeleton.GetComponent<unitController>();
 
-        if (skeletonController.isTargetNullOrBoss() == false)
+        if (skeletonController.isTargetNullOrBoss() == false && skeletonController.isHitting)
             return;
 
 
         if (skeleton.CompareTag("playerUnit"))
         {
+
             if (enemyUnitsList.Count > 0)
             {
                 skeletonController.setTarget(findClosestEnemy(enemyUnitsList.ToArray(), skeleton));
@@ -69,6 +70,8 @@ public class unitMatcher : MonoBehaviour
 
         if (skeleton.CompareTag("enemyUnit"))
         {
+            if (skeletonController.isHitting)
+                return;
             if (playerUnitsList.Count > 0)
             {
                 skeletonController.setTarget(findClosestEnemy(playerUnitsList.ToArray(), skeleton));

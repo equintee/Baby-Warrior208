@@ -108,7 +108,8 @@ public class playerController : MonoBehaviour
             await Task.Delay(System.TimeSpan.FromSeconds(1f));
             GameObject spawnedSkeleton = Instantiate(unitStats[unitLevel].unitPrefab, spawnPosition, Quaternion.identity, playerUnits.transform);
             spawnedSkeleton.tag = "playerUnit";
-            spawnedSkeleton.GetComponent<unitController>().moveToBridgeExit(playerBridgeExit);
+            unitMatcher.addSkeletonToList(unitMatcher.playerUnitsList, spawnedSkeleton);
+            //spawnedSkeleton.GetComponent<unitController>().moveToBridgeExit(playerBridgeExit);
         }
 
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)

@@ -11,6 +11,7 @@ public class unitController : MonoBehaviour
     public int damage;
     [HideInInspector] public bool isTargetBoss = false;
     [HideInInspector] public bool isAlive = true;
+    [HideInInspector] public bool isHitting = false;
 
     private float moveSpeed;
     private Rigidbody rb;
@@ -39,6 +40,7 @@ public class unitController : MonoBehaviour
     private bool isMovingToTarget = true;
     private void Update()
     {
+        Debug.Log(navMeshAgent.isStopped);
         if (!target)
             return;
 
@@ -54,6 +56,7 @@ public class unitController : MonoBehaviour
     {
         this.enabled = false;
         isMovingToTarget = false;
+        isHitting = true;
         navMeshAgent.isStopped = true;
         rb.constraints = RigidbodyConstraints.FreezeAll;
         transform.DOLookAt(target.position, 0f);
@@ -64,7 +67,7 @@ public class unitController : MonoBehaviour
         bool isTargetDead = target.GetComponent<unitController>().animateGetHit();
         target = isTargetDead ? null : target;
         isMovingToTarget = true;
-
+        isHitting = false;
         rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
         this.enabled = true;
 
@@ -104,7 +107,7 @@ public class unitController : MonoBehaviour
         }
             
 
-        GetComponent<BoxCollider>().enabled = false;
+        GetComponent<NavMeshAgent>().enabled = false;
         animator.SetTrigger("death");
         this.enabled = false;
         Invoke("destroyUnit", 3f);
@@ -134,7 +137,6 @@ public class unitController : MonoBehaviour
 
     public void moveToTarget()
     {
-        navMeshAgent.isStopped = false;
         navMeshAgent.SetDestination(target.position);
     }
 
