@@ -7,27 +7,25 @@ public class manaSpawner : MonoBehaviour
 {
     public int spawnInterval;
     public int maximumSpawnCount;
+    public GameObject playerField;
+    public GameObject spermPrefab;
+    
 
-    public GameObject manaPrefab;
-
-    public int counter = 0;
-    private float upperBoundX;
-    private float lowerBoundX;
-    private float upperBoundZ;
-    private float lowerBoundZ;
-
+    [HideInInspector] public int counter = 0;
+    private Vector3 upperBound, lowerBound;
     void Start()
     {
         //Assign border coordinates
         playerController playerController = FindObjectOfType<playerController>();
-        float[] borders = playerController.getBorders();
+        //TODO: FIX float[] borders = playerController.getBorders();
+        Bounds playerFieldCollider = playerField.GetComponent<BoxCollider>().bounds;
 
-        lowerBoundX = borders[0];
-        upperBoundX = borders[1];
-        lowerBoundZ = borders[2];
-        upperBoundX = borders[3];
+        upperBound = playerFieldCollider.max;
+        lowerBound = playerFieldCollider.min;
+
 
         spawnMana();
+
     }
 
     private float deltaTime = 0f;
@@ -38,17 +36,16 @@ public class manaSpawner : MonoBehaviour
             spawnMana();
     }
 
-    private Collider[] hit;
     private void spawnMana()
     {
         deltaTime = 0f;
         if (counter == maximumSpawnCount)
             return;
-        Vector3 spawnPoint = new Vector3(Random.Range(lowerBoundX, upperBoundX), 6.5f, Random.Range(lowerBoundZ, upperBoundZ));
-        while (Physics.OverlapSphere(spawnPoint, 1f, layerMask: Physics.AllLayers ,queryTriggerInteraction: QueryTriggerInteraction.Collide).Length > 0)
-            spawnPoint = new Vector3(Random.Range(lowerBoundX, upperBoundX), 6.5f, Random.Range(lowerBoundZ, upperBoundZ));
+        Vector3 spawnPoint = new Vector3(Random.Range(lowerBound.x, upperBound.x), 6.5f, Random.Range(lowerBound.z, upperBound.z));
+       /* while (Physics.OverlapSphere(spawnPoint, 1f, layerMask: Physics.AllLayers ,queryTriggerInteraction: QueryTriggerInteraction.Collide).Length > 0)
+            spawnPoint = new Vector3(Random.Range(lowerBound.x, upperBound.x), 6.5f, Random.Range(lowerBound.z, upperBound.z));*/
 
         counter++;
-        Instantiate(manaPrefab, spawnPoint, Quaternion.identity, transform).transform.GetChild(0);
+        Instantiate(spermPrefab, spawnPoint, Quaternion.identity, transform).transform.GetChild(0);
     }
 }

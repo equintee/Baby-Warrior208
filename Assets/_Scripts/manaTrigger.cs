@@ -11,10 +11,6 @@ public class manaTrigger : MonoBehaviour
         DOTween.Kill(transform.GetChild(0));
         if (other.transform.CompareTag("Player"))
             other.GetComponent<playerController>().updateMana(10);
-
-
-        if (other.transform.CompareTag("Enemy"))
-            other.GetComponent<enemyController>().updateMana(10);
         Destroy(gameObject);
     }
 }

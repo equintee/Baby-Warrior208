@@ -30,10 +30,12 @@ public class enemyFieldController : MonoBehaviour
 
         foreach (GameObject spawner in spawners)
         {
+            Destroy(spawner.GetComponent<playerSpawnPoint>());
             enemySpawner enemySpawner = spawner.AddComponent<enemySpawner>();
             enemySpawner.initilizeSpawnProperties(spawnProperties, unitStats);
             spawner.tag = "enemySpawner";
         }
+
             
 
         for (int i = 0; i < initialUnitCount; i++)

@@ -18,36 +18,37 @@ public struct unitStats
 public class playerController : MonoBehaviour
 {
     public float movementSpeed;
-    public float rotationSpeed;
     public List<unitStats> unitStats;
     public Transform playerUnits;
-    public Transform playerBridgeExit;
+    public Transform playerSpawnersParent;
     public Joystick joystick;
     public GameObject manaBar;
     public TextMeshProUGUI goldText;
-    public int manaCost;
     private unitMatcher unitMatcher;
 
+    [HideInInspector] public List<GameObject> playerSpawners;
     private Animator animator;
     private Transform playerModel;
     private Rigidbody rb;
     private int playerMana = 50;
     private int playerGold = 0;
 
-
-    private float borderMaxX = 30f;
-    private float borderMinX = 12f;
-    private float borderMaxZ = 9f;
-    private float borderMinZ = -9f;
-
-
-
-    void Start()
+    void Awake()
     {
         playerModel = transform.GetChild(0);
         animator = playerModel.GetComponent<Animator>();
         rb = transform.GetComponent<Rigidbody>();
         unitMatcher = FindObjectOfType<unitMatcher>();
+
+        foreach (Transform spawnerTransform in playerSpawnersParent)
+        {
+            GameObject spawner = spawnerTransform.gameObject;
+            playerSpawners.Add(spawner);
+            foreach (BoxCollider collider in spawner.GetComponents<BoxCollider>())
+                collider.enabled = (spawner.activeSelf || collider.isTrigger);
+                
+        }
+            
 
         updateGoldText();
         updateManaBar();
@@ -82,17 +83,6 @@ public class playerController : MonoBehaviour
         if(Physics.Raycast(waypoint, Vector3.down))
             rb.MovePosition(verticalMovement + horizontalMovement + transform.position);
 
-
-
-        /* if (rb.position.x > borderMaxX)
-             rb.position = new Vector3(borderMaxX, 0, rb.position.z);
-         if (borderMinX > rb.position.x)
-             rb.position = new Vector3(borderMinX, 0, rb.position.z);
-
-         if (rb.position.z > borderMaxZ)
-             rb.position = new Vector3(rb.position.x, 0, borderMaxZ);
-         if (borderMinZ > rb.position.z)
-             rb.position = new Vector3(rb.position.x, 0, borderMinZ);*/
     }
 
     
@@ -139,18 +129,6 @@ public class playerController : MonoBehaviour
     {
         playerMana += value;
         updateManaBar();
-    }
-
-    public float[] getBorders()
-    {
-        float[] borders = new float[4]; //X,Z
-                
-        borders[0] = borderMinX;
-        borders[1] = borderMaxX;
-        borders[2] = borderMinZ;
-        borders[3] = borderMaxX;
-
-        return borders;
     }
 
     public void updateGold(int value)

@@ -14,8 +14,8 @@ public class unitMatcher : MonoBehaviour
 
     [HideInInspector] public List<GameObject> playerUnitsList;
     [HideInInspector] public List<GameObject> enemyUnitsList;
+    [HideInInspector] public List<GameObject> playerSpawners;
     [HideInInspector] public List<GameObject> enemySpawners;
-
 
 
     void Awake()

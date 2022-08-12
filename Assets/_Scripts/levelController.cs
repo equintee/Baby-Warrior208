@@ -18,6 +18,7 @@ public class levelController : MonoBehaviour
         {
             disableScripts();
             tapToStart.SetActive(false);
+            this.enabled = false;
         }
     }
 
