@@ -78,17 +78,21 @@ public class playerController : MonoBehaviour
         Vector3 verticalMovement = Vector3.left * movementSpeed * Time.fixedDeltaTime * joystick.Vertical;
         Vector3 horizontalMovement = Vector3.forward * movementSpeed * Time.fixedDeltaTime * joystick.Horizontal;
 
-        rb.MovePosition(verticalMovement + horizontalMovement + transform.position);
+        Vector3 waypoint = verticalMovement + horizontalMovement + transform.position;
+        if(Physics.Raycast(waypoint, Vector3.down))
+            rb.MovePosition(verticalMovement + horizontalMovement + transform.position);
 
-       /* if (rb.position.x > borderMaxX)
-            rb.position = new Vector3(borderMaxX, 0, rb.position.z);
-        if (borderMinX > rb.position.x)
-            rb.position = new Vector3(borderMinX, 0, rb.position.z);
 
-        if (rb.position.z > borderMaxZ)
-            rb.position = new Vector3(rb.position.x, 0, borderMaxZ);
-        if (borderMinZ > rb.position.z)
-            rb.position = new Vector3(rb.position.x, 0, borderMinZ);*/
+
+        /* if (rb.position.x > borderMaxX)
+             rb.position = new Vector3(borderMaxX, 0, rb.position.z);
+         if (borderMinX > rb.position.x)
+             rb.position = new Vector3(borderMinX, 0, rb.position.z);
+
+         if (rb.position.z > borderMaxZ)
+             rb.position = new Vector3(rb.position.x, 0, borderMaxZ);
+         if (borderMinZ > rb.position.z)
+             rb.position = new Vector3(rb.position.x, 0, borderMinZ);*/
     }
 
     
