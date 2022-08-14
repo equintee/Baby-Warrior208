@@ -141,4 +141,9 @@ public class playerController : MonoBehaviour
     {
         goldText.text = playerGold.ToString();
     }
+
+    public int getGold()
+    {
+        return playerGold;
+    }
 }

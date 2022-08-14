@@ -78,19 +78,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 90d108a7b2db2d243b9373297c9d5c8b, type: 3}
   m_PrefabInstance: {fileID: 3747297122414508692}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2786817626582336774
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4089403912527873989}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7b2417f61b139e4aa096f34c9be09c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnerLevel: 0
 --- !u!65 &1378376302307779526
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -117,3 +104,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 4, y: 4, z: 4}
   m_Center: {x: 0, y: 0, z: 1.4842495}
+--- !u!114 &2786817626582336774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4089403912527873989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7b2417f61b139e4aa096f34c9be09c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnerLevel: 0
+  goldCost: 0
+  hitbox: {fileID: 1378376302307779526}
+  spawnTrigger: {fileID: 4609644576379877863}
