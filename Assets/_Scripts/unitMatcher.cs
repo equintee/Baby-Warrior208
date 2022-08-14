@@ -56,7 +56,7 @@ public class unitMatcher : MonoBehaviour
     {
         unitController skeletonController = skeleton.GetComponent<unitController>();
 
-        if (skeletonController.isHitting)
+        if (skeletonController.isLookingForTarget == false)
             return;
 
         skeletonController.resetPath();
@@ -77,8 +77,6 @@ public class unitMatcher : MonoBehaviour
 
         if (skeleton.CompareTag("enemyUnit"))
         {
-            if (skeletonController.isHitting)
-                return;
             if (playerUnitsList.Count > 0)
             {
                 skeletonController.setTarget(findClosestTarget(playerUnitsList.ToArray(), skeleton));

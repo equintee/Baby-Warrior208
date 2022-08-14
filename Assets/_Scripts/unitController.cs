@@ -9,9 +9,12 @@ public class unitController : MonoBehaviour
 {
     public int hp;
     public int damage;
+    public float damageAnimationLength;
+    public float deathAnimationLength;
+    public float gettingHitAnimationLength;
     [HideInInspector] public bool isTargetSpawner = false;
     [HideInInspector] public bool isAlive = true;
-    [HideInInspector] public bool isHitting = false;
+    [HideInInspector] public bool isLookingForTarget = true;
 
     private float moveSpeed;
     private Rigidbody rb;
@@ -30,6 +33,11 @@ public class unitController : MonoBehaviour
 
         navMeshAgent = GetComponent<NavMeshAgent>();
         navMeshAgent.speed = moveSpeed;
+
+        isTargetSpawner = false;
+        isAlive = true;
+        isLookingForTarget = true;
+
     }
     public void setTarget(Transform target)
     {
@@ -43,17 +51,16 @@ public class unitController : MonoBehaviour
         if (!target)
             return;
 
-        if(isTargetReached() && !isHitting)
+        if(isTargetReached() && isLookingForTarget)
         {
             animateHit(damage);
         }
-            
 
     }
 
     private async void animateHit(int damage)
     {
-        isHitting = true;
+        isLookingForTarget = false;
      
         navMeshAgent.ResetPath();
         navMeshAgent.velocity = Vector3.zero;
@@ -61,12 +68,15 @@ public class unitController : MonoBehaviour
         rb.constraints = RigidbodyConstraints.FreezeAll;
         transform.DOLookAt(target.position, 0f);
         animator.SetTrigger("attack");
-        await Task.Delay(System.TimeSpan.FromSeconds(1.250f));
-        
+        await Task.Delay(System.TimeSpan.FromSeconds(damageAnimationLength));
+
+        if (!isAlive)
+            return;
+
         if(target && (target.CompareTag("enemyUnit") || target.CompareTag("playerUnit")))
         {
             target.GetComponent<unitController>().decrementHp(damage);
-            bool isTargetDead = target.GetComponent<unitController>().animateGetHit();
+            bool isTargetDead = target.GetComponent<unitController>().getHit();
             target = isTargetDead ? null : target;
         }
         else if(target.CompareTag("enemySpawner"))
@@ -75,7 +85,7 @@ public class unitController : MonoBehaviour
         }
         
         rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
-        isHitting = false;
+        isLookingForTarget = true;
 
     }
 
@@ -84,19 +94,24 @@ public class unitController : MonoBehaviour
         hp -= damage;
     }
 
-    public bool animateGetHit()
+    public bool getHit()
     {
+        resetPath();
+        isLookingForTarget = false;
         if (hp > 0)
-        {
-            animator.SetTrigger("getHit");
-        }
+            animateGettingHit();
         else if (isAlive)
             return animateDeath();
 
         return false;
 
     }
-
+    public async void animateGettingHit()
+    {
+        animator.SetTrigger("getHit");
+        await Task.Delay(System.TimeSpan.FromSeconds(gettingHitAnimationLength));
+        isLookingForTarget = true;
+    }
     public bool animateDeath()
     {
         isAlive = false;
@@ -114,7 +129,7 @@ public class unitController : MonoBehaviour
         GetComponent<NavMeshAgent>().enabled = false;
         animator.SetTrigger("death");
         this.enabled = false;
-        Invoke("destroyUnit", 3f);
+        Invoke("destroyUnit", deathAnimationLength + 2f);
         return true;
     }
 
