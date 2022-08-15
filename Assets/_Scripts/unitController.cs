@@ -172,7 +172,6 @@ public class unitController : MonoBehaviour
 
     public bool isTargetReached()
     {
-        Debug.Log(Vector3.Distance(transform.position, target.position));
         return Vector3.Distance(transform.position, target.position) <= 3f;
     }
 

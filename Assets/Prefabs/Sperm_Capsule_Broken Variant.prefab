@@ -639,5 +639,6 @@ MonoBehaviour:
   isEnabled: 0
   spawnerLevel: 0
   goldCost: 0
+  spawnCostIndicator: {fileID: 1219628413666864, guid: 603b7f589d2adc446ae6f20ac3b637b5, type: 3}
   hitbox: {fileID: 4413985247445335815}
   spawnTrigger: {fileID: 1185351915142064445}

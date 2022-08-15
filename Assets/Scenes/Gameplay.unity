@@ -341,8 +341,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 2.132623, z: 1}
-  m_Center: {x: 0, y: 0.5663116, z: 0}
+  m_Size: {x: 0.8630764, y: 2.132623, z: 0.79019135}
+  m_Center: {x: 0.026743293, y: 0.5663116, z: 0.06413822}
 --- !u!1 &373812466
 GameObject:
   m_ObjectHideFlags: 0
@@ -1146,6 +1146,71 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1095859504
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 2092285019}
+    m_Modifications:
+    - target: {fileID: 407069935855410676, guid: d0f665a21f1c2944ebca42bb524d6bf5, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 407069935855410676, guid: d0f665a21f1c2944ebca42bb524d6bf5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 8.180001
+      objectReference: {fileID: 0}
+    - target: {fileID: 407069935855410676, guid: d0f665a21f1c2944ebca42bb524d6bf5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.8299999
+      objectReference: {fileID: 0}
+    - target: {fileID: 407069935855410676, guid: d0f665a21f1c2944ebca42bb524d6bf5, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 4.67
+      objectReference: {fileID: 0}
+    - target: {fileID: 407069935855410676, guid: d0f665a21f1c2944ebca42bb524d6bf5, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 407069935855410676, guid: d0f665a21f1c2944ebca42bb524d6bf5, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 407069935855410676, guid: d0f665a21f1c2944ebca42bb524d6bf5, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 407069935855410676, guid: d0f665a21f1c2944ebca42bb524d6bf5, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 407069935855410676, guid: d0f665a21f1c2944ebca42bb524d6bf5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 407069935855410676, guid: d0f665a21f1c2944ebca42bb524d6bf5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 407069935855410676, guid: d0f665a21f1c2944ebca42bb524d6bf5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1075765886257153870, guid: d0f665a21f1c2944ebca42bb524d6bf5, type: 3}
+      propertyPath: m_Name
+      value: level2_Spawner
+      objectReference: {fileID: 0}
+    - target: {fileID: 3786276626883399653, guid: d0f665a21f1c2944ebca42bb524d6bf5, type: 3}
+      propertyPath: goldCost
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3786276626883399653, guid: d0f665a21f1c2944ebca42bb524d6bf5, type: 3}
+      propertyPath: isEnabled
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d0f665a21f1c2944ebca42bb524d6bf5, type: 3}
 --- !u!1 &1179340139
 GameObject:
   m_ObjectHideFlags: 0
@@ -1298,6 +1363,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1234885504}
   m_CullTransparentMesh: 1
+--- !u!4 &1306027414 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 407069935855410676, guid: d0f665a21f1c2944ebca42bb524d6bf5, type: 3}
+  m_PrefabInstance: {fileID: 1095859504}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1403147772 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 64a17cbcee98a5f46a00acf2578f5c17, type: 3}
@@ -2547,6 +2617,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 918485501}
+  - {fileID: 1306027414}
   m_Father: {fileID: 70183244}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2679,7 +2750,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1075765886257153870, guid: d0f665a21f1c2944ebca42bb524d6bf5, type: 3}
       propertyPath: m_Name
-      value: Sperm_Capsule_Broken
+      value: level1_Spawner
+      objectReference: {fileID: 0}
+    - target: {fileID: 3786276626883399653, guid: d0f665a21f1c2944ebca42bb524d6bf5, type: 3}
+      propertyPath: goldCost
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3786276626883399653, guid: d0f665a21f1c2944ebca42bb524d6bf5, type: 3}
       propertyPath: isEnabled

@@ -91,6 +91,9 @@ public class playerController : MonoBehaviour
 
     public async void spawnSkeletons(Vector3 spawnPosition, int unitLevel)
     {
+
+        //TODO: BUGLU MANA CHECKI ONDEN YAP GELCEKTEKI BEN 
+
         //Disable playerMovement
         isMoving = false;
         setUpdate();
