@@ -78,8 +78,8 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 90d108a7b2db2d243b9373297c9d5c8b, type: 3}
   m_PrefabInstance: {fileID: 3747297122414508692}
   m_PrefabAsset: {fileID: 0}
---- !u!65 &1378376302307779526
-BoxCollider:
+--- !u!135 &1257311714510210267
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -89,8 +89,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.3423507, y: 2.3423512, z: 20}
-  m_Center: {x: 0, y: 0, z: 1.4842495}
+  m_Radius: 1.3
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &4609644576379877863
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -118,5 +118,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnerLevel: 0
   goldCost: 0
-  hitbox: {fileID: 1378376302307779526}
+  hitbox: {fileID: 1257311714510210267}
   spawnTrigger: {fileID: 4609644576379877863}

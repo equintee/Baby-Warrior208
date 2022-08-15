@@ -17,9 +17,12 @@ public class unitMatcher : MonoBehaviour
     [HideInInspector] public List<GameObject> playerSpawners;
     [HideInInspector] public List<GameObject> enemySpawners;
 
+    private levelController levelController;
 
     void Awake()
     {
+        levelController = FindObjectOfType<levelController>();
+
         playerUnitsList = new List<GameObject>();
         enemyUnitsList = new List<GameObject>();
 
@@ -39,11 +42,17 @@ public class unitMatcher : MonoBehaviour
     private void Start()
     {
         enemySpawners = FindObjectOfType<enemyFieldController>().spawners;
+        playerSpawners = FindObjectOfType<playerController>().playerSpawners;
     }
 
     private void Update()
     {
         removeDeadSkeletonsFromList();
+
+        if (playerSpawners.Count == 0)
+            levelController.endGame(true);
+        else if (enemySpawners.Count == 0)
+            levelController.endGame(false);
 
         foreach (GameObject skeleton in playerUnitsList.ToArray())
             setTarget(skeleton);
@@ -84,7 +93,7 @@ public class unitMatcher : MonoBehaviour
 
             if (playerUnits.childCount == 0)
             {
-                skeletonController.setTarget(player.transform);
+                skeletonController.setTarget(findClosestTarget(playerSpawners.ToArray(), skeleton));
                 skeletonController.GetComponent<unitController>().isTargetSpawner = true;
             }
         }
@@ -137,4 +146,5 @@ public class unitMatcher : MonoBehaviour
         }
         return closestEnemy;
     }
+
 }

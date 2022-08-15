@@ -20,10 +20,10 @@ public class unitController : MonoBehaviour
     private Rigidbody rb;
     private Animator animator;
     [SerializeField]private Transform target;
-    
     private unitMatcher unitMatcher;
     private NavMeshAgent navMeshAgent;
-
+    private bool cancelAttack = false; 
+    
     private void Awake()
     {
         moveSpeed = FindObjectOfType<unitMatcher>().unitSpeed;
@@ -61,7 +61,7 @@ public class unitController : MonoBehaviour
     private async void animateHit(int damage)
     {
         isLookingForTarget = false;
-     
+        cancelAttack = false;
         navMeshAgent.ResetPath();
         navMeshAgent.velocity = Vector3.zero;
 
@@ -69,19 +69,25 @@ public class unitController : MonoBehaviour
         transform.DOLookAt(target.position, 0f);
         animator.SetTrigger("attack");
         await Task.Delay(System.TimeSpan.FromSeconds(damageAnimationLength));
-
-        if (!isAlive)
+        
+        if (cancelAttack)
             return;
-
+        Debug.Log("asd");
         if(target && (target.CompareTag("enemyUnit") || target.CompareTag("playerUnit")))
         {
             target.GetComponent<unitController>().decrementHp(damage);
             bool isTargetDead = target.GetComponent<unitController>().getHit();
             target = isTargetDead ? null : target;
         }
-        else if(target.CompareTag("enemySpawner"))
+        else if(target && target.CompareTag("enemySpawner"))
         {
             target.gameObject.SetActive(false);
+            unitMatcher.enemySpawners.Remove(target.gameObject);
+        }
+        else if(target && target.CompareTag("playerSpawner"))
+        {
+            target.gameObject.SetActive(false);
+            unitMatcher.playerSpawners.Remove(target.gameObject);
         }
         
         rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
@@ -97,6 +103,7 @@ public class unitController : MonoBehaviour
     public bool getHit()
     {
         resetPath();
+        cancelAttack = true;
         isLookingForTarget = false;
         if (hp > 0)
             animateGettingHit();
@@ -126,7 +133,7 @@ public class unitController : MonoBehaviour
         }
             
 
-        GetComponent<NavMeshAgent>().enabled = false;
+        navMeshAgent.enabled = false;
         animator.SetTrigger("death");
         this.enabled = false;
         Invoke("destroyUnit", deathAnimationLength + 2f);
@@ -156,6 +163,8 @@ public class unitController : MonoBehaviour
 
     public void resetPath()
     {
+        if (navMeshAgent.enabled == false)
+            return;
         navMeshAgent.ResetPath();
     }
 }

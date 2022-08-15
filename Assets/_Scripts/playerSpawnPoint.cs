@@ -7,14 +7,15 @@ public class playerSpawnPoint : MonoBehaviour
 {
     public int spawnerLevel;
     public int goldCost;
-    public BoxCollider hitbox;
+    public SphereCollider hitbox;
     public BoxCollider spawnTrigger;
 
     private bool isEnabled;
     private void Awake()
     {
         isEnabled = gameObject.GetComponent<MeshRenderer>().enabled;
-        Debug.Log(isEnabled);
+        hitbox.enabled = isEnabled;
+        
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -38,6 +39,7 @@ public class playerSpawnPoint : MonoBehaviour
     public async void animateUpgrade()
     {
         GetComponent<MeshRenderer>().enabled = true;
+        hitbox.enabled = true;
         transform.position = transform.position + new Vector3(0, -3.5f, 0);
         await transform.DOMoveY(transform.position.y + 3.5f, 0.5f).SetEase(Ease.Linear).AsyncWaitForCompletion();
         spawnTrigger.enabled = false;

@@ -39,16 +39,12 @@ public class playerController : MonoBehaviour
         animator = playerModel.GetComponent<Animator>();
         rb = transform.GetComponent<Rigidbody>();
         unitMatcher = FindObjectOfType<unitMatcher>();
-
+        playerSpawners = new List<GameObject>();
         foreach (Transform spawnerTransform in playerSpawnersParent)
         {
-            GameObject spawner = spawnerTransform.gameObject;
-            playerSpawners.Add(spawner);
-            foreach (BoxCollider collider in spawner.GetComponents<BoxCollider>())
-                collider.enabled = (spawner.activeSelf || collider.isTrigger);
-                
+            if (spawnerTransform.GetComponent<MeshRenderer>().enabled)
+                playerSpawners.Add(spawnerTransform.gameObject);
         }
-            
 
         updateGoldText();
         updateManaBar();
