@@ -42,7 +42,7 @@ public class playerController : MonoBehaviour
         playerSpawners = new List<GameObject>();
         foreach (Transform spawnerTransform in playerSpawnersParent)
         {
-            if (spawnerTransform.GetComponent<MeshRenderer>().enabled)
+            if (spawnerTransform.GetComponent<playerSpawnPoint>().isEnabled)
                 playerSpawners.Add(spawnerTransform.gameObject);
         }
 

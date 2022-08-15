@@ -72,7 +72,6 @@ public class unitController : MonoBehaviour
         
         if (cancelAttack)
             return;
-        Debug.Log("asd");
         if(target && (target.CompareTag("enemyUnit") || target.CompareTag("playerUnit")))
         {
             target.GetComponent<unitController>().decrementHp(damage);
@@ -81,12 +80,12 @@ public class unitController : MonoBehaviour
         }
         else if(target && target.CompareTag("enemySpawner"))
         {
-            target.gameObject.SetActive(false);
+            explodeCapsules();
             unitMatcher.enemySpawners.Remove(target.gameObject);
         }
         else if(target && target.CompareTag("playerSpawner"))
         {
-            target.gameObject.SetActive(false);
+            explodeCapsules();
             unitMatcher.playerSpawners.Remove(target.gameObject);
         }
         
@@ -98,6 +97,21 @@ public class unitController : MonoBehaviour
     public void decrementHp(int damage)
     {
         hp -= damage;
+    }
+
+    private void explodeCapsules()
+    {
+        List<Rigidbody> pieceRBList = new List<Rigidbody>();
+        foreach(Transform spawnerPiece in target.transform)
+        {
+            pieceRBList.Add(spawnerPiece.gameObject.AddComponent<Rigidbody>());
+            spawnerPiece.gameObject.AddComponent<BoxCollider>();
+        }
+
+        foreach (Rigidbody rb in pieceRBList)
+            rb.AddExplosionForce(1.5f, rb.position, 1);
+
+        Destroy(target.gameObject, 2f);
     }
 
     public bool getHit()
@@ -158,7 +172,8 @@ public class unitController : MonoBehaviour
 
     public bool isTargetReached()
     {
-        return Vector3.Distance(transform.position, target.position) <= 2f;
+        Debug.Log(Vector3.Distance(transform.position, target.position));
+        return Vector3.Distance(transform.position, target.position) <= 3f;
     }
 
     public void resetPath()
