@@ -33,7 +33,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: damage
-  m_Speed: 1
+  m_Speed: 2
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -3127535518034200760}
@@ -46,7 +46,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: 638b5610525df35419eda2fd757d6443, type: 3}
+  m_Motion: {fileID: 1827226128182048838, guid: a16e97b74a221cc42b744b9d804db6dc, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -183,7 +183,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: 6b91438e19253044fb976563deca2885, type: 3}
+  m_Motion: {fileID: 1827226128182048838, guid: 66fdfe79bf2fbba4a8e807b67029b93e, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

@@ -57,15 +57,17 @@ public class playerController : MonoBehaviour
         playerMovement();
     }
 
+    private bool isMoving = false;
     private void playerMovement()
     {
-        if (Input.touchCount > 0)
+        if(!isMoving && Vector3.Magnitude(new Vector3(joystick.Horizontal, joystick.Vertical, 0)) > 0){
+            isMoving = true;
+            animator.SetTrigger("run");
+        }
+        else if(isMoving && Vector3.Magnitude(new Vector3(joystick.Horizontal, joystick.Vertical, 0)) == 0)
         {
-            Touch touch = Input.GetTouch(0);
-            if (touch.phase == TouchPhase.Began)
-                animator.SetTrigger("run");
-            if (touch.phase == TouchPhase.Ended)
-                animator.SetTrigger("idle");
+            isMoving = false;
+            animator.SetTrigger("idle");
         }
 
         //Fixable
@@ -90,6 +92,7 @@ public class playerController : MonoBehaviour
     public async void spawnSkeletons(Vector3 spawnPosition, int unitLevel)
     {
         //Disable playerMovement
+        isMoving = false;
         setUpdate();
         while(playerMana >= unitStats[unitLevel].manaCost)
         {

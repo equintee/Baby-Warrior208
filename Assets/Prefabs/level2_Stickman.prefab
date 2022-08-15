@@ -753,8 +753,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: 2
   damage: 1
-  damageAnimationLength: 2.4
-  deathAnimationLength: 3.033
+  damageAnimationLength: 1.42
+  deathAnimationLength: 3
   gettingHitAnimationLength: 2.3
   isTargetSpawner: 0
   isAlive: 1
