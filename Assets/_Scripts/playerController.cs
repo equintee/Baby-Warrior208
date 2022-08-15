@@ -108,11 +108,7 @@ public class playerController : MonoBehaviour
             //spawnedSkeleton.GetComponent<unitController>().moveToBridgeExit(playerBridgeExit);
         }
 
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
-            animator.SetTrigger("run");
-
-
-        Invoke("setUpdate", 1f);
+        setUpdate();
     }
 
 
