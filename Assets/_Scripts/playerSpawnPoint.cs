@@ -43,7 +43,7 @@ public class playerSpawnPoint : MonoBehaviour
                 
         }
         else
-            playerController.spawnSkeletons(transform.position, spawnerLevel);
+            playerController.spawnSkeletons(transform.position + new Vector3(0,-1,0), spawnerLevel);
 
     }
 
