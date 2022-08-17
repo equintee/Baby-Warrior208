@@ -41,7 +41,7 @@ public class manaSpawner : MonoBehaviour
         deltaTime = 0f;
         if (counter == maximumSpawnCount)
             return;
-        Vector3 spawnPoint = new Vector3(Random.Range(lowerBound.x, upperBound.x), 6.5f, Random.Range(lowerBound.z, upperBound.z));
+        Vector3 spawnPoint = new Vector3(Random.Range(lowerBound.x, upperBound.x), 1.5f, Random.Range(lowerBound.z, upperBound.z));
        /* while (Physics.OverlapSphere(spawnPoint, 1f, layerMask: Physics.AllLayers ,queryTriggerInteraction: QueryTriggerInteraction.Collide).Length > 0)
             spawnPoint = new Vector3(Random.Range(lowerBound.x, upperBound.x), 6.5f, Random.Range(lowerBound.z, upperBound.z));*/
 

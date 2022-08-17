@@ -42,8 +42,7 @@ public class playerController : MonoBehaviour
         playerSpawners = new List<GameObject>();
         foreach (Transform spawnerTransform in playerSpawnersParent)
         {
-            if (spawnerTransform.GetComponent<playerSpawnPoint>().isEnabled)
-                playerSpawners.Add(spawnerTransform.gameObject);
+            playerSpawners.Add(spawnerTransform.gameObject);
         }
 
         updateGoldText();
@@ -71,14 +70,14 @@ public class playerController : MonoBehaviour
         }
 
         //Fixable
-        Vector3 rotation = new Vector3(0, (Mathf.Atan2(joystick.Vertical, joystick.Horizontal) * 180 / Mathf.PI * -1), 0);
+        Vector3 rotation = new Vector3(0, (Mathf.Atan2(joystick.Vertical, joystick.Horizontal) * 180 / Mathf.PI * -1) - 90, 0);
         playerModel.eulerAngles = rotation;
 
-        Vector3 verticalMovement = Vector3.left * movementSpeed * Time.fixedDeltaTime * joystick.Vertical;
-        Vector3 horizontalMovement = Vector3.forward * movementSpeed * Time.fixedDeltaTime * joystick.Horizontal;
+        Vector3 verticalMovement = Vector3.back * movementSpeed * Time.fixedDeltaTime * joystick.Vertical;
+        Vector3 horizontalMovement = Vector3.left * movementSpeed * Time.fixedDeltaTime * joystick.Horizontal;
 
         Vector3 waypoint = verticalMovement + horizontalMovement + transform.position;
-        Debug.Log(Physics.Raycast(waypoint, Vector3.down));
+        Debug.Log(Physics.Raycast(waypoint, Vector3.down, 1000f));
         if(Physics.Raycast(waypoint, Vector3.down))
             rb.MovePosition(verticalMovement + horizontalMovement + transform.position);
 

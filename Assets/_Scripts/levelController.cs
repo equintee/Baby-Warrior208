@@ -1,14 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class levelController : MonoBehaviour
 {
     [SerializeField] public unitMatcher unitMatcher;
-    [SerializeField] public enemyFieldController enemyFieldController;
+    [SerializeField] public enemyController enemyController;
     [SerializeField] public playerController playerController;
     [SerializeField] public manaSpawner manaSpawner;
-
+    [SerializeField] public Animator cinemachineAnimator;
 
     public GameObject tapToStart;
     public GameObject playerWinScreen;
@@ -27,15 +28,24 @@ public class levelController : MonoBehaviour
     private void changeStatusOfScripts(bool value)
     {
         unitMatcher.enabled = value;
-        enemyFieldController.enabled = value;
+        enemyController.enabled = value;
         playerController.enabled = value;
         manaSpawner.enabled = value;
         this.enabled = false;
     }
 
-    public void endGame(bool playerWin)
+    public async void endGame(bool playerWin)
     {
         changeStatusOfScripts(false);
+        cinemachineAnimator.Play("ending");
+        await Task.Delay(System.TimeSpan.FromSeconds(1f));
+
+        foreach (GameObject unit in GameObject.FindGameObjectsWithTag("enemyUnit"))
+            Destroy(unit);
+        foreach (GameObject unit in GameObject.FindGameObjectsWithTag("playerUnit"))
+            Destroy(unit);
+
+
         if (playerWin)
             playerWinScreen.SetActive(true);
         else

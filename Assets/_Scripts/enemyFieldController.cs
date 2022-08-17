@@ -36,8 +36,6 @@ public class enemyFieldController : MonoBehaviour
             spawner.tag = "enemySpawner";
         }
 
-            
-
         for (int i = 0; i < initialUnitCount; i++)
             spawners[Random.Range(0, spawners.Count)].GetComponent<enemySpawner>().spawnUnit();
 
