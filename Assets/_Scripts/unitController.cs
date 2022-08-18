@@ -78,18 +78,13 @@ public class unitController : MonoBehaviour
             bool isTargetDead = target.GetComponent<unitController>().getHit();
             target = isTargetDead ? null : target;
         }
-        /*else if(target && target.CompareTag("enemySpawner"))
-        {
-            explodeCapsules();
-            unitMatcher.enemySpawners.Remove(target.gameObject);
-        }
         else if(target && target.CompareTag("playerSpawner"))
         {
             explodeCapsules();
-            unitMatcher.playerSpawners.Remove(target.gameObject);
-        }*/
-        
-        rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
+            unitMatcher.removeSpawnerFromList(target.gameObject);
+        }
+        if(rb)
+            rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
         isLookingForTarget = true;
 
     }

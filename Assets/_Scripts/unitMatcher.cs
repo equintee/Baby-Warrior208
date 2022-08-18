@@ -15,6 +15,7 @@ public class unitMatcher : MonoBehaviour
 
     [HideInInspector] public List<GameObject> playerUnitsList;
     [HideInInspector] public List<GameObject> enemyUnitsList;
+    [HideInInspector] public List<GameObject> playerSpawners;
 
 
     private levelController levelController;
@@ -37,6 +38,10 @@ public class unitMatcher : MonoBehaviour
 
     }
 
+    private void Start()
+    {
+        playerSpawners = FindObjectOfType<playerController>().playerSpawners;
+    }
 
     private void Update()
     {
@@ -77,6 +82,10 @@ public class unitMatcher : MonoBehaviour
             if (playerUnitsList.Count > 0)
             {
                 skeletonController.setTarget(findClosestTarget(playerUnitsList.ToArray(), skeleton));
+            }
+            if(playerUnitsList.Count == 0)
+            {
+                skeletonController.setTarget(findClosestTarget(playerSpawners.ToArray(), skeleton));
             }
         }
 
@@ -123,4 +132,11 @@ public class unitMatcher : MonoBehaviour
         return closestEnemy;
     }
 
+    public void removeSpawnerFromList(GameObject spawner)
+    {
+        playerSpawners.Remove(spawner);
+
+        if (playerSpawners.Count == 0)
+            levelController.endGame(false);
+    }
 }

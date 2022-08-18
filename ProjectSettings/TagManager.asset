@@ -9,6 +9,7 @@ TagManager:
   - enemyUnit
   - enemySpawner
   - mana
+  - playerSpawner
   layers:
   - Default
   - TransparentFX
