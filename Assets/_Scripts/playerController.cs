@@ -22,7 +22,7 @@ public class playerController : MonoBehaviour
     public Transform playerUnits;
     public Transform playerSpawnersParent;
     public Joystick joystick;
-    public GameObject manaBar;
+    public TextMeshProUGUI manaText;
     public TextMeshProUGUI goldText;
     private unitMatcher unitMatcher;
 
@@ -91,36 +91,18 @@ public class playerController : MonoBehaviour
 
     public async void spawnSkeletons(Vector3 spawnPosition, int unitLevel)
     {
-
-        //TODO: BUGLU MANA CHECKI ONDEN YAP GELCEKTEKI BEN 
-
-        //Disable playerMovement
-        isMoving = false;
-        setUpdate();
-        while(playerMana >= unitStats[unitLevel].manaCost)
+        if(playerMana >= unitStats[unitLevel].manaCost)
         {
             updateMana(-unitStats[unitLevel].manaCost);
-            animator.SetTrigger("spawnSkeleton");
-            await Task.Delay(System.TimeSpan.FromSeconds(1f));
             GameObject spawnedSkeleton = Instantiate(unitStats[unitLevel].unitPrefab, spawnPosition, Quaternion.identity, playerUnits.transform);
             spawnedSkeleton.tag = "playerUnit";
             unitMatcher.addSkeletonToList(unitMatcher.playerUnitsList, spawnedSkeleton);
-            //spawnedSkeleton.GetComponent<unitController>().moveToBridgeExit(playerBridgeExit);
         }
-
-        setUpdate();
     }
 
-
-    private Tween manaBarTween;
     private void updateManaBar()
     {
-        if (manaBarTween != null)
-            DOTween.Kill(manaBarTween);
-
-        float targetManaBarValue = playerMana * 0.01f;
-        manaBarTween = DOTween.To(() => manaBar.GetComponent<Image>().fillAmount, x => manaBar.GetComponent<Image>().fillAmount = x, targetManaBarValue, 0.5f).SetEase(Ease.Linear).OnComplete(() => manaBarTween = null);
-
+        manaText.text = playerMana.ToString();
     }
 
     public void updateMana(int value)

@@ -6,18 +6,29 @@ using UnityEngine;
 
 public class playerSpawnPoint : MonoBehaviour
 {
-    public int spawnerLevel;
-    public int goldCost;
-    public GameObject spawnCostIndicator; 
-    public SphereCollider hitbox;
-    public BoxCollider spawnTrigger;
-    private void OnTriggerEnter(Collider other)
+    private int spawnerLevel = 0;
+    private float deltaTime = 0f;
+    private void OnTriggerStay(Collider other)
     {
         if (!other.CompareTag("Player"))
             return;
-        playerController playerController = other.GetComponent<playerController>();
-        playerController.spawnSkeletons(transform.position + new Vector3(0,-1,0), spawnerLevel);
 
+        deltaTime += Time.deltaTime;
+        if (deltaTime > 0.5f)
+        {
+            playerController playerController = other.GetComponent<playerController>();
+            playerController.spawnSkeletons(transform.parent.position + new Vector3(0, -1, 0), spawnerLevel);
+            deltaTime = 0f;
+        }
+
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (!other.CompareTag("Player"))
+            return;
+
+        deltaTime = 0f;
     }
 
 }

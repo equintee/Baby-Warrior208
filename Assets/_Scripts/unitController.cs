@@ -97,7 +97,7 @@ public class unitController : MonoBehaviour
     private void explodeCapsules()
     {
         List<Rigidbody> pieceRBList = new List<Rigidbody>();
-        foreach(Transform spawnerPiece in target.transform)
+        foreach(Transform spawnerPiece in target.transform.GetChild(0))
         {
             pieceRBList.Add(spawnerPiece.gameObject.AddComponent<Rigidbody>());
             spawnerPiece.gameObject.AddComponent<BoxCollider>();
@@ -167,7 +167,7 @@ public class unitController : MonoBehaviour
 
     public bool isTargetReached()
     {
-        return Vector3.Distance(transform.position, target.position) <= 3f;
+        return Vector3.Distance(transform.position, target.position) <= 3.5f;
     }
 
     public void resetPath()

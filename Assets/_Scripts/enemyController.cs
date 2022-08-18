@@ -35,8 +35,8 @@ public class enemyController : MonoBehaviour
         enemySpawners = new List<GameObject>();
         foreach (Transform spawner in enemySpawnersParent)
         {
-            spawner.tag = "enemySpawner";
-            enemySpawners.Add(spawner.gameObject);
+            spawner.GetChild(1).tag = "enemySpawner";
+            enemySpawners.Add(spawner.GetChild(1).gameObject);
         }
             
         foreach (GameObject spawner in enemySpawners)
@@ -61,6 +61,7 @@ public class enemyController : MonoBehaviour
 
     private void AIMovement()
     {
+        resetPath();
         animator.SetTrigger("run");
         if (enemyMana >= manaCost && Random.Range(0, 101) < spawnChance)
             moveToSpawner();
@@ -79,14 +80,12 @@ public class enemyController : MonoBehaviour
         navMeshAgent.SetDestination(findClosestObjectInArray(enemyManaList.ToArray()).position);
     }
 
-    private async void spawnUnit(GameObject spawner)
+    private void spawnUnit(GameObject spawner)
     {
-        while(enemyMana >= manaCost)
+        if(enemyMana >= manaCost)
         {
             updateMana(-manaCost);
-            animator.SetTrigger("spawnSkeleton");
-            await Task.Delay(System.TimeSpan.FromSeconds(1f));
-            GameObject unit = Instantiate(unitPrefab, spawner.transform.position, Quaternion.identity, enemyUnitsParent);
+            GameObject unit = Instantiate(unitPrefab, spawner.transform.parent.position, Quaternion.identity, enemyUnitsParent);
             unit.tag = "enemyUnit";
             unitMatcher.addSkeletonToList(unitMatcher.enemyUnitsList, unit);
         }
@@ -141,9 +140,7 @@ public class enemyController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        resetPath();
-        if (other.CompareTag("enemySpawner"))
-            spawnUnit(other.gameObject);
+        
         if (other.CompareTag("mana"))
         {
             enemyMana += 3;
@@ -151,10 +148,37 @@ public class enemyController : MonoBehaviour
             Destroy(other.gameObject);
             if (enemyManaList.Count == 0)
                 spawnMana();
-
             AIMovement();
-            
         }
             
+    }
+    private float spawnTime = 0f;
+    private bool ignoreSpawner = false;
+    private void OnTriggerStay(Collider other)
+    {
+        if (!other.CompareTag("enemySpawner") && ignoreSpawner)
+            return;
+
+        if (manaCost > enemyMana)
+        {
+            ignoreSpawner = true;
+            return;
+        }
+            
+
+        spawnTime += Time.deltaTime;
+
+        if (spawnTime > 0.5f)
+            spawnUnit(other.gameObject);
+        
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (!other.CompareTag("enemySpawner"))
+            return;
+        ignoreSpawner = false;
+        spawnTime = 0f;
+        AIMovement();
     }
 }
