@@ -8,22 +8,22 @@ public class enemyController : MonoBehaviour
 {
     public GameObject unitPrefab;
     public Transform enemyUnitsParent;
-    [Range(0,100)]public int spawnChance;
-    public int manaCost;
     public GameObject enemyField;
     public Transform enemySpawnersParent;
     public int maximumManaCount;
     public GameObject manaPrefab;
 
+    private int spawnChance;
     private NavMeshAgent navMeshAgent;
     private Animator animator;
     private List<GameObject> enemySpawners;
     private List<GameObject> enemyManaList;
     private int enemyMana;
-    [SerializeField]private Transform target;
     private unitMatcher unitMatcher;
     private Bounds manaSpawnBounds;
     private int manaCount;
+    private int manaCost = 10;
+    private int manaGain = 10;
     private void Awake()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -41,7 +41,22 @@ public class enemyController : MonoBehaviour
             
         foreach (GameObject spawner in enemySpawners)
             Destroy(spawner.GetComponent<playerSpawnPoint>());
-        
+
+
+        if (PlayerPrefs.HasKey("level"))
+        {
+            manaGain = PlayerPrefs.GetInt("level") + 13;
+            spawnChance = PlayerPrefs.GetInt("level") * 10 + 80;
+        }
+
+        else
+        {
+            manaGain = 10;
+            spawnChance = 80;
+        }
+
+        decrementManaGain();
+        decrementSpawnChannce();
     }
     
     void Start()
@@ -51,10 +66,32 @@ public class enemyController : MonoBehaviour
     }
 
 
+    private async void decrementManaGain()
+    {
+        await Task.Delay(System.TimeSpan.FromSeconds(5f));
+        
+        if (manaGain <= 5)
+            return;
+
+        manaGain--;
+        decrementManaGain();
+    }
+
+    private async void decrementSpawnChannce()
+    {
+        await Task.Delay(System.TimeSpan.FromSeconds(5f));
+
+        if (spawnChance <= 70)
+            return;
+
+        spawnChance -= 5;
+        decrementSpawnChannce();
+    }
+
     private float deltaTime = 0f;
     void Update()
     {
-        deltaTime = Time.deltaTime;
+        deltaTime += Time.deltaTime;
         if (deltaTime > 2f)
             spawnMana();
     }
@@ -97,10 +134,6 @@ public class enemyController : MonoBehaviour
     {
         enemyMana += value;
     }
-    private bool isTargetReached()
-    {
-        return Vector3.Distance(transform.position, target.position) <= 3f;
-    }
 
     public void resetPath()
     {
@@ -134,16 +167,17 @@ public class enemyController : MonoBehaviour
             1.5f,
             Random.Range(manaSpawnBounds.min.z, manaSpawnBounds.max.z)
             );
-
-        enemyManaList.Add(Instantiate(manaPrefab, spawnPoint, Quaternion.identity, enemyField.transform));
+        GameObject mana = Instantiate(manaPrefab, spawnPoint, Quaternion.identity, enemyField.transform);
+        mana.tag = "enemyMana";
+        enemyManaList.Add(mana);
     }
 
     private void OnTriggerEnter(Collider other)
     {
         
-        if (other.CompareTag("mana"))
+        if (other.CompareTag("enemyMana"))
         {
-            enemyMana += 3;
+            enemyMana += manaGain;
             enemyManaList.Remove(other.gameObject);
             Destroy(other.gameObject);
             if (enemyManaList.Count == 0)
@@ -179,6 +213,16 @@ public class enemyController : MonoBehaviour
             return;
         ignoreSpawner = false;
         spawnTime = 0f;
+        AIMovement();
+    }
+
+    //naming :/
+    public void playerStoleMana(GameObject stolenMana)
+    {
+        enemyManaList.Remove(stolenMana);
+        manaCount--;
+        if (enemyManaList.Count == 0)
+            spawnMana();
         AIMovement();
     }
 }

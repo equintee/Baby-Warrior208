@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public class levelController : MonoBehaviour
 {
@@ -14,6 +16,13 @@ public class levelController : MonoBehaviour
     public GameObject tapToStart;
     public GameObject playerWinScreen;
     public GameObject playerLoseScreen;
+    public GameObject changeSceneButton;
+
+    private void Awake()
+    {
+        if (!PlayerPrefs.HasKey("level"))
+            PlayerPrefs.SetInt("level", 1);
+    }
 
     void Update()
     {
@@ -37,8 +46,9 @@ public class levelController : MonoBehaviour
     public async void endGame(bool playerWin)
     {
         changeStatusOfScripts(false);
-        
-        foreach(unitController unitController in FindObjectsOfType<unitController>())
+        GameObject.FindGameObjectWithTag("Enemy").SetActive(false);
+
+        foreach (unitController unitController in FindObjectsOfType<unitController>())
         {
             unitController.cancelAttack = true;
         }
@@ -56,9 +66,18 @@ public class levelController : MonoBehaviour
         {
             playerWinScreen.SetActive(true);
             destroyCastle();
+            PlayerPrefs.SetInt("level", PlayerPrefs.GetInt("level") + 1);
         }
         else
+        {
+            PlayerPrefs.SetInt("level", PlayerPrefs.GetInt("level") - 1);
             playerLoseScreen.SetActive(true);
+            
+        }
+
+        
+        changeSceneButton.SetActive(true);
+            
 
     }
 
@@ -83,5 +102,13 @@ public class levelController : MonoBehaviour
             
         }
 
+    }
+
+    public void changeScene()
+    {
+        int level = SceneManager.GetActiveScene().buildIndex;
+        level++;
+        level %= SceneManager.sceneCountInBuildSettings;
+        SceneManager.LoadScene(level);
     }
 }

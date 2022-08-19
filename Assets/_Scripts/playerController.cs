@@ -30,7 +30,7 @@ public class playerController : MonoBehaviour
     private Animator animator;
     private Transform playerModel;
     private Rigidbody rb;
-    private int playerMana = 50;
+    private int playerMana = 0;
     private int playerGold = 0;
 
     void Awake()
@@ -124,5 +124,11 @@ public class playerController : MonoBehaviour
     public int getGold()
     {
         return playerGold;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("enemyMana"))
+            FindObjectOfType<enemyController>().playerStoleMana(other.gameObject);
     }
 }
