@@ -6,6 +6,7 @@ public class endingPointTrigger : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
+        GetComponent<BoxCollider>().enabled = false;
         FindObjectOfType<levelController>().endGame(true);
     }
 }

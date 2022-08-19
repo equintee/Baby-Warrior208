@@ -77,7 +77,6 @@ public class playerController : MonoBehaviour
         Vector3 horizontalMovement = Vector3.left * movementSpeed * Time.fixedDeltaTime * joystick.Horizontal;
 
         Vector3 waypoint = verticalMovement + horizontalMovement + transform.position;
-        Debug.Log(Physics.Raycast(waypoint, Vector3.down, 1000f));
         if(Physics.Raycast(waypoint, Vector3.down))
             rb.MovePosition(verticalMovement + horizontalMovement + transform.position);
 
