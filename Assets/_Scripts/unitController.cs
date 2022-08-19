@@ -15,14 +15,14 @@ public class unitController : MonoBehaviour
     [HideInInspector] public bool isTargetSpawner = false;
     [HideInInspector] public bool isAlive = true;
     [HideInInspector] public bool isLookingForTarget = true;
+    [HideInInspector] public bool cancelAttack = false; 
 
     private float moveSpeed;
     private Rigidbody rb;
     private Animator animator;
-    [SerializeField]private Transform target;
+    private Transform target;
     private unitMatcher unitMatcher;
     private NavMeshAgent navMeshAgent;
-    private bool cancelAttack = false; 
     
     private void Awake()
     {

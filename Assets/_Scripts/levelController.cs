@@ -38,6 +38,11 @@ public class levelController : MonoBehaviour
     {
         changeStatusOfScripts(false);
         
+        foreach(unitController unitController in FindObjectsOfType<unitController>())
+        {
+            unitController.cancelAttack = true;
+        }
+
         if (playerWin)
         {
             cinemachineAnimator.Play("ending");
