@@ -1,4 +1,4 @@
-using DG.Tweening;
+﻿using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -106,6 +106,8 @@ public class unitController : MonoBehaviour
         foreach (Rigidbody rb in pieceRBList)
             rb.AddExplosionForce(1.5f, rb.position, 1);
 
+        //Kapsül içindeki spermin hemen kaybolması için satır 110. nun yorumunu kaldırabilirsin.
+        //Destroy(target.GetChild(2).gameObject);
         Destroy(target.parent.gameObject, 2f);
     }
 
