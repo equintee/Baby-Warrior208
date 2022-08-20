@@ -106,7 +106,7 @@ public class unitController : MonoBehaviour
         foreach (Rigidbody rb in pieceRBList)
             rb.AddExplosionForce(1.5f, rb.position, 1);
 
-        Destroy(target.gameObject, 2f);
+        Destroy(target.parent.gameObject, 2f);
     }
 
     public bool getHit()
