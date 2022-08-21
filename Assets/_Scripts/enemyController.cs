@@ -127,7 +127,6 @@ public class enemyController : MonoBehaviour
             unitMatcher.addSkeletonToList(unitMatcher.enemyUnitsList, unit);
         }
 
-        AIMovement();
     }
 
     private void updateMana(int value)
@@ -190,12 +189,14 @@ public class enemyController : MonoBehaviour
     private bool ignoreSpawner = false;
     private void OnTriggerStay(Collider other)
     {
-        if (!other.CompareTag("enemySpawner") && ignoreSpawner)
+
+        if (!other.gameObject.CompareTag("enemySpawner") || ignoreSpawner)
             return;
 
         if (manaCost > enemyMana)
         {
             ignoreSpawner = true;
+            AIMovement();
             return;
         }
             
@@ -213,7 +214,6 @@ public class enemyController : MonoBehaviour
             return;
         ignoreSpawner = false;
         spawnTime = 0f;
-        AIMovement();
     }
 
     //naming :/

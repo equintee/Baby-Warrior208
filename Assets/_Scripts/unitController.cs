@@ -178,4 +178,9 @@ public class unitController : MonoBehaviour
             return;
         navMeshAgent.ResetPath();
     }
+
+    public Transform getTarget()
+    {
+        return target;
+    }
 }

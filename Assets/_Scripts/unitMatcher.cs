@@ -61,7 +61,6 @@ public class unitMatcher : MonoBehaviour
         if (skeletonController.isLookingForTarget == false)
             return;
 
-        skeletonController.resetPath();
         if (skeleton.CompareTag("playerUnit"))
         {
 
@@ -70,7 +69,7 @@ public class unitMatcher : MonoBehaviour
                 skeletonController.setTarget(findClosestTarget(enemyUnitsList.ToArray(), skeleton));
             }
 
-            if (enemyUnits.childCount == 0)
+            if (enemyUnits.childCount == 0 && skeletonController.getTarget() != enemyCastle.transform)
             {
                 skeletonController.setTarget(enemyCastle.transform);
                 skeletonController.GetComponent<unitController>().isTargetSpawner = true;
