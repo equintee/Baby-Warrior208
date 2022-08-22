@@ -108,7 +108,7 @@ public class unitController : MonoBehaviour
 
         //Kapsül içindeki spermin hemen kaybolması için satır 110. nun yorumunu kaldırabilirsin.
         //Destroy(target.GetChild(2).gameObject);
-        Destroy(target.parent.gameObject, 2f);
+        Destroy(target.gameObject, 2f);
     }
 
     public bool getHit()
