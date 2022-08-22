@@ -685,7 +685,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_BuildHeightMesh: 0
-  m_NavMeshData: {fileID: 23800000, guid: 3d154bc0a882b8447b898814e50e480f, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: ef507ebe1a0696549955f8b11091bdc5, type: 2}
 --- !u!1 &423018829
 GameObject:
   m_ObjectHideFlags: 0
@@ -1605,6 +1605,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitPrefab: {fileID: 4774761328359794169, guid: 43ba8adbeeed1e344ad9d1d163b0a548, type: 3}
+  enemyUnitMaterial: {fileID: 2100000, guid: b4d1acd35caf177479038bbc1222ddd9, type: 2}
   enemyUnitsParent: {fileID: 565234281}
   enemyField: {fileID: 1157836022}
   enemySpawnersParent: {fileID: 2081613356}

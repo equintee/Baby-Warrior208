@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class enemyController : MonoBehaviour
 {
     public GameObject unitPrefab;
+    public Material enemyUnitMaterial;
     public Transform enemyUnitsParent;
     public GameObject enemyField;
     public Transform enemySpawnersParent;
@@ -126,6 +127,7 @@ public class enemyController : MonoBehaviour
         {
             updateMana(-manaCost);
             GameObject unit = Instantiate(unitPrefab, spawner.transform.parent.position, Quaternion.identity, enemyUnitsParent);
+            unit.transform.GetChild(0).GetComponent<SkinnedMeshRenderer>().material = enemyUnitMaterial;
             unit.tag = "enemyUnit";
             unitMatcher.addSkeletonToList(unitMatcher.enemyUnitsList, unit);
         }
