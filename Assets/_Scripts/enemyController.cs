@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
-
+using UnityEngine.SceneManagement;
 public class enemyController : MonoBehaviour
 {
     public GameObject unitPrefab;
@@ -54,6 +54,9 @@ public class enemyController : MonoBehaviour
             manaGain = 10;
             spawnChance = 80;
         }
+
+        if (SceneManager.GetActiveScene().buildIndex == 0)
+            manaGain /= 2;
 
         decrementManaGain();
         decrementSpawnChannce();
