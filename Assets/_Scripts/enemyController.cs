@@ -171,6 +171,14 @@ public class enemyController : MonoBehaviour
             1.5f,
             Random.Range(manaSpawnBounds.min.z, manaSpawnBounds.max.z)
             );
+
+        while(Physics.Raycast(spawnPoint, Vector3.down, 0.01f))
+            spawnPoint = new Vector3(
+            Random.Range(manaSpawnBounds.min.x, manaSpawnBounds.max.x),
+            1.5f,
+            Random.Range(manaSpawnBounds.min.z, manaSpawnBounds.max.z)
+            );
+
         GameObject mana = Instantiate(manaPrefab, spawnPoint, Quaternion.identity, enemyField.transform);
         mana.tag = "enemyMana";
         enemyManaList.Add(mana);
