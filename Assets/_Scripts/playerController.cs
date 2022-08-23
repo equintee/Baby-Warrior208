@@ -18,6 +18,8 @@ public struct unitStats
 public class playerController : MonoBehaviour
 {
     public float movementSpeed;
+    public GameObject powerUpSpawner;
+    public GameObject babyPrefab;
     public List<unitStats> unitStats;
     public Transform playerUnits;
     public Transform playerSpawnersParent;
@@ -32,13 +34,14 @@ public class playerController : MonoBehaviour
     private Rigidbody rb;
     private int playerMana = 0;
     private int playerGold = 0;
-
+    private SkinnedMeshRenderer skinnedMeshRenderer;
     void Awake()
     {
         playerModel = transform.GetChild(0);
         animator = playerModel.GetComponent<Animator>();
         rb = transform.GetComponent<Rigidbody>();
         unitMatcher = FindObjectOfType<unitMatcher>();
+        skinnedMeshRenderer = playerModel.transform.GetChild(1).GetComponent<SkinnedMeshRenderer>();
         playerSpawners = new List<GameObject>();
         foreach (Transform spawnerTransform in playerSpawnersParent)
         {
@@ -88,17 +91,27 @@ public class playerController : MonoBehaviour
         this.enabled = !this.enabled;
     }
 
-    public async void spawnSkeletons(Vector3 spawnPosition, int unitLevel)
+    public void spawnSkeletons(Vector3 spawnPosition, int unitLevel)
+    {
+        GameObject spawnedSkeleton = Instantiate(unitStats[unitLevel].unitPrefab, spawnPosition, Quaternion.identity, playerUnits.transform);
+            spawnedSkeleton.tag = "playerUnit";
+            unitMatcher.addSkeletonToList(unitMatcher.playerUnitsList, spawnedSkeleton);
+    }
+
+    public async void spawnBaby(Vector3 spawnPosition, int unitLevel)
     {
         if(playerMana >= unitStats[unitLevel].manaCost)
         {
             updateMana(-unitStats[unitLevel].manaCost);
-            GameObject spawnedSkeleton = Instantiate(unitStats[unitLevel].unitPrefab, spawnPosition, Quaternion.identity, playerUnits.transform);
-            spawnedSkeleton.tag = "playerUnit";
-            unitMatcher.addSkeletonToList(unitMatcher.playerUnitsList, spawnedSkeleton);
+            spawnPosition.y = 1.5f;
+            GameObject spawnedBaby = Instantiate(babyPrefab, spawnPosition, Quaternion.identity, playerUnits.transform);
+            spawnedBaby.transform.DOLookAt(powerUpSpawner.transform.position, 0f);
+            spawnedBaby.transform.DOMoveX(powerUpSpawner.transform.position.x, 2f).SetSpeedBased().SetEase(Ease.Linear);
+            await spawnedBaby.transform.DOMoveZ(powerUpSpawner.transform.position.z, 2f).SetSpeedBased().SetEase(Ease.Linear).AsyncWaitForCompletion();
+            spawnSkeletons(powerUpSpawner.transform.position, 0);
+            Destroy(spawnedBaby.gameObject);
         }
     }
-
     private void updateManaBar()
     {
         manaText.text = playerMana.ToString();
@@ -107,6 +120,7 @@ public class playerController : MonoBehaviour
     public void updateMana(int value)
     {
         playerMana += value;
+        skinnedMeshRenderer.SetBlendShapeWeight(0, playerMana * 0.01f);
         updateManaBar();
     }
 

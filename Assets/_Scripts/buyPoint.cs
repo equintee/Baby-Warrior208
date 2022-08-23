@@ -40,12 +40,14 @@ public class buyPoint : MonoBehaviour
             GameObject spawner = Instantiate(spawnerPrefab, transform.position, Quaternion.Euler(new Vector3(0, -90, 0)), playerController.playerSpawnersParent);
             FindObjectOfType<unitMatcher>().addSpawnerToList(spawner);
             spawner.transform.position = transform.position - new Vector3(0, 5, 0);
+            spawner.tag = "playerSpawner";
             if (spawner.transform.position.z > 0)
-                spawner.transform.GetChild(1).position = transform.position - new Vector3(3, 0, 0);
+                spawner.transform.GetChild(1).position = spawner.transform.position - new Vector3(3, 1.25f, 0);
             else if (spawner.transform.position.z <= 0)
-                spawner.transform.GetChild(1).position = transform.position + new Vector3(3, 0, 0);
-
-            spawner.transform.DOMove(spawner.transform.position + new Vector3(0, 5, 0), 1f).SetEase(Ease.Linear);
+                spawner.transform.GetChild(1).position = spawner.transform.position + new Vector3(3, -1.25f, 0);
+            
+            spawner.transform.GetChild(1).rotation = Quaternion.Euler(90, 0, 0);
+            spawner.transform.DOMoveY(2.90f, 1f).SetEase(Ease.Linear);
             Destroy(gameObject);
         }
 
@@ -55,7 +57,7 @@ public class buyPoint : MonoBehaviour
 
     private void updateCost(int value)
     {
-        cost -= value;
+        cost += value;
         costText.text = cost.ToString();
 
     }

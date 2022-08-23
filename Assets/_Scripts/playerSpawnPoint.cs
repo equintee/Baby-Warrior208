@@ -17,7 +17,7 @@ public class playerSpawnPoint : MonoBehaviour
         if (deltaTime > 0.5f)
         {
             playerController playerController = other.GetComponent<playerController>();
-            playerController.spawnSkeletons(transform.parent.position + new Vector3(0, -1, 0), spawnerLevel);
+            playerController.spawnBaby(transform.parent.position + new Vector3(0, -1, 0), spawnerLevel);
             deltaTime = 0f;
         }
 
