@@ -138,4 +138,9 @@ public class unitMatcher : MonoBehaviour
         if (playerSpawners.Count == 0)
             levelController.endGame(false);
     }
+
+    public void addSpawnerToList(GameObject spawner)
+    {
+        playerSpawners.Add(spawner);
+    }
 }

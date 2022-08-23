@@ -131,4 +131,5 @@ public class playerController : MonoBehaviour
         if (other.CompareTag("enemyMana"))
             FindObjectOfType<enemyController>().playerStoleMana(other.gameObject);
     }
+
 }
