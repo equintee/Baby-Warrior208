@@ -108,11 +108,12 @@ public class playerController : MonoBehaviour
     {
         if(playerMana >= unitStats[unitLevel].manaCost)
         {
+            updateMana(-unitStats[unitLevel].manaCost);
             DOTween.Kill(spawner.transform);
             spawner.transform.GetChild(3).GetComponent<ParticleSystem>().Play();
             await spawner.transform.GetChild(0).DOScale(new Vector3(1.30f, 0.70f, 1), 0.25f).AsyncWaitForCompletion();
             await spawner.transform.GetChild(0).DOScale(Vector3.one, 0.25f).AsyncWaitForCompletion();
-            updateMana(-unitStats[unitLevel].manaCost);
+            
             spawnPosition.y = 1.5f;
             GameObject spawnedBaby = Instantiate(babyPrefab, spawnPosition, Quaternion.identity, playerBabyUnits.transform);
             spawnedBaby.transform.DOLookAt(powerUpSpawner.transform.position, 0f);
