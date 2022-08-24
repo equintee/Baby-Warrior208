@@ -105,7 +105,7 @@ public class unitMatcher : MonoBehaviour
             {
                 skeletonController.setTarget(findClosestTarget(playerUnitsList.ToArray(), skeleton));
             }
-            if(playerUnitsList.Count == 0 && playerSpawners.Count != 0)
+            if(playerSpawners.Count != 0)
             {
                 skeletonController.setTarget(findClosestTarget(playerSpawners.ToArray(), skeleton));
             }

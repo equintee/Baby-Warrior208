@@ -49,7 +49,10 @@ public class unitController : MonoBehaviour
     {
 
         if (!target)
+        {
+            target = null;
             return;
+        }
 
         if(isTargetReached() && isLookingForTarget)
         {
@@ -71,7 +74,11 @@ public class unitController : MonoBehaviour
         await Task.Delay(System.TimeSpan.FromSeconds(damageAnimationLength));
         
         if (cancelAttack)
+        {
+            isLookingForTarget = true;
             return;
+        }
+            
         if(target && (target.CompareTag("enemyUnit") || target.CompareTag("playerUnit")))
         {
             target.GetComponent<unitController>().decrementHp(damage);
