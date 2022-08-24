@@ -77,6 +77,9 @@ public class unitMatcher : MonoBehaviour
             }
             if(enemySpawners.Count > 0)
             {
+                Transform target = findClosestTarget(enemySpawners.ToArray(), skeleton);
+                if (target == skeletonController.getTarget())
+                    return;
                 skeletonController.setTarget(findClosestTarget(enemySpawners.ToArray(), skeleton));
                 return;
             }

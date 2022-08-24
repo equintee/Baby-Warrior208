@@ -85,7 +85,7 @@ public class unitController : MonoBehaviour
         }
         else if(target && target.CompareTag("enemySpawner"))
         {
-            unitMatcher.enemyUnitsList.Remove(target.gameObject);
+            unitMatcher.enemySpawners.Remove(target.gameObject);
             explodeCapsules();
         }
         else if(target && target.CompareTag("powerUpSpawner"))

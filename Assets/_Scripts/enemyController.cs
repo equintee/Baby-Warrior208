@@ -41,6 +41,7 @@ public class enemyController : MonoBehaviour
         foreach (Transform spawner in enemySpawnersParent)
         {
             spawner.GetChild(1).tag = "enemySpawner";
+            spawner.tag = "enemySpawner";
             enemySpawners.Add(spawner.GetChild(1).gameObject);
         }
             
@@ -108,6 +109,12 @@ public class enemyController : MonoBehaviour
     {
         resetPath();
         animator.SetTrigger("run");
+        if(unitMatcher.enemySpawners.Count == 0)
+        {
+            moveToMana();
+            return;
+        }
+
         if (enemyMana >= manaCost && Random.Range(0, 101) < spawnChance)
             moveToSpawner();
         else
