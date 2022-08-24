@@ -100,6 +100,7 @@ public class enemyController : MonoBehaviour
     private float deltaTime = 0f;
     void Update()
     {
+
         deltaTime += Time.deltaTime;
         if (deltaTime > 2f)
             spawnMana();

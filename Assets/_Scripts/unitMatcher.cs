@@ -20,6 +20,7 @@ public class unitMatcher : MonoBehaviour
     [HideInInspector] public List<GameObject> enemyUnitsList;
     [HideInInspector] public List<GameObject> playerSpawners;
     [HideInInspector] public List<GameObject> enemySpawners;
+    [HideInInspector] public bool isEnemyPowerUpSpawnerAlive = true;
 
 
     private levelController levelController;
@@ -84,16 +85,17 @@ public class unitMatcher : MonoBehaviour
                 return;
             }
 
-            if(enemySpawners.Count == 0 && enemyPowerUpSpawner)
+            if(enemySpawners.Count == 0 && isEnemyPowerUpSpawnerAlive)
             {
                 skeletonController.setTarget(enemyPowerUpSpawner.transform);
                 return;
             }
             
-            if (!enemyPowerUpSpawner && skeletonController.getTarget() != enemyCastle.transform)
+            if (!isEnemyPowerUpSpawnerAlive && skeletonController.getTarget() != enemyCastle.transform)
             {
                 skeletonController.setTarget(enemyCastle.transform);
                 skeletonController.GetComponent<unitController>().isTargetSpawner = true;
+                return;
             }
 
 
@@ -104,14 +106,17 @@ public class unitMatcher : MonoBehaviour
             if (playerUnitsList.Count > 0)
             {
                 skeletonController.setTarget(findClosestTarget(playerUnitsList.ToArray(), skeleton));
+                return;
             }
             if(playerSpawners.Count != 0)
             {
                 skeletonController.setTarget(findClosestTarget(playerSpawners.ToArray(), skeleton));
+                return;
             }
             if(playerSpawners.Count == 0)
             {
                 skeletonController.setTarget(playerPowerUpSpawner.transform);
+                return;
             }
         }
 

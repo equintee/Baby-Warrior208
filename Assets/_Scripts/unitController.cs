@@ -15,7 +15,7 @@ public class unitController : MonoBehaviour
     [HideInInspector] public bool isTargetSpawner = false;
     [HideInInspector] public bool isAlive = true;
     [HideInInspector] public bool isLookingForTarget = true;
-    [HideInInspector] public bool cancelAttack = false; 
+    public bool cancelAttack = false; 
 
     private float moveSpeed;
     private Rigidbody rb;
@@ -51,6 +51,7 @@ public class unitController : MonoBehaviour
         if (!target)
         {
             target = null;
+            isLookingForTarget = true;
             return;
         }
 
@@ -72,7 +73,9 @@ public class unitController : MonoBehaviour
         transform.DOLookAt(target.position, 0f);
         animator.SetTrigger("attack");
         await Task.Delay(System.TimeSpan.FromSeconds(damageAnimationLength));
-        
+
+        cancelAttack = !target ? true : false;
+
         if (cancelAttack)
         {
             isLookingForTarget = true;
@@ -100,6 +103,12 @@ public class unitController : MonoBehaviour
             explodeCapsules();
             if (transform.CompareTag("enemyUnit"))
                 FindObjectOfType<levelController>().endGame(false);
+            else
+            {
+                FindObjectOfType<levelController>().moveCameraAtFinalPosition();
+                unitMatcher.isEnemyPowerUpSpawnerAlive = false;
+            }
+                
         }
         if(rb)
             rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
@@ -152,7 +161,7 @@ public class unitController : MonoBehaviour
     {
         isAlive = false;
         unitMatcher.moveSkeletonToCorpse(gameObject);
-
+        cancelAttack = true;
         if (transform.CompareTag("playerUnit"))
             unitMatcher.playerUnitsList.Remove(gameObject);
         if (transform.CompareTag("enemyUnit"))

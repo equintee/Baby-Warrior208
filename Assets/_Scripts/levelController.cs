@@ -55,9 +55,8 @@ public class levelController : MonoBehaviour
 
         if (playerWin)
         {
-            cinemachineAnimator.Play("ending");
-            foreach (GameObject unit in GameObject.FindGameObjectsWithTag("playerUnit"))
-                unit.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+            /*foreach (GameObject unit in GameObject.FindGameObjectsWithTag("playerUnit"))
+                unit.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);*/
         }
         await Task.Delay(System.TimeSpan.FromSeconds(1.5f));
         destroyAllUnits();
@@ -110,5 +109,11 @@ public class levelController : MonoBehaviour
         level++;
         level %= SceneManager.sceneCountInBuildSettings;
         SceneManager.LoadScene(level);
+    }
+    public void moveCameraAtFinalPosition()
+    {
+        foreach (GameObject unit in GameObject.FindGameObjectsWithTag("playerUnit"))
+            unit.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+        cinemachineAnimator.Play("ending");
     }
 }
