@@ -131,10 +131,13 @@ public class unitController : MonoBehaviour
         }
 
         foreach (Rigidbody rb in pieceRBList)
-            rb.AddExplosionForce(1.5f, rb.position, 1);
+            if (rb)
+                rb.AddExplosionForce(1.5f, rb.position, 1);
+            else
+                return;
 
         //Kapsül içindeki spermin hemen kaybolması için satır 110. nun yorumunu kaldırabilirsin.
-        //Destroy(target.GetChild(2).gameObject);
+        Destroy(target.GetChild(2).gameObject);
         Destroy(target.gameObject, 2f);
     }
 

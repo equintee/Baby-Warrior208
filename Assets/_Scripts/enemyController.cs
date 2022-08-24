@@ -29,12 +29,14 @@ public class enemyController : MonoBehaviour
     private int manaCount;
     private int manaCost = 10;
     private int manaGain = 10;
+    private int spawnerMask;
     private void Awake()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
         animator = transform.GetChild(0).GetComponent<Animator>();
         unitMatcher = FindObjectOfType<unitMatcher>();
         manaSpawnBounds = enemyField.GetComponent<BoxCollider>().bounds;
+        spawnerMask = LayerMask.GetMask("spawner");
 
         enemyManaList = new List<GameObject>();
         enemySpawners = new List<GameObject>();
@@ -100,6 +102,8 @@ public class enemyController : MonoBehaviour
     private float deltaTime = 0f;
     void Update()
     {
+        if (enemyMana > manaCost)
+            ignoreSpawner = false;
 
         deltaTime += Time.deltaTime;
         if (deltaTime > 2f)
@@ -208,7 +212,7 @@ public class enemyController : MonoBehaviour
             Random.Range(manaSpawnBounds.min.z, manaSpawnBounds.max.z)
             );
 
-        while(Physics.Raycast(spawnPoint, Vector3.down, 0.01f))
+        while(Physics.Raycast(spawnPoint, Vector3.down, 10f, spawnerMask))
             spawnPoint = new Vector3(
             Random.Range(manaSpawnBounds.min.x, manaSpawnBounds.max.x),
             1.5f,
@@ -263,8 +267,6 @@ public class enemyController : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (!other.CompareTag("enemySpawner"))
-            return;
         ignoreSpawner = false;
         spawnTime = 0f;
     }

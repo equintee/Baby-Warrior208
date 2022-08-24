@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -37,7 +38,8 @@ public class levelController : MonoBehaviour
     private void changeStatusOfScripts(bool value)
     {
         unitMatcher.enabled = value;
-        enemyController.enabled = value;
+        if(enemyController)
+            enemyController.enabled = value;
         playerController.enabled = value;
         manaSpawner.enabled = value;
         this.enabled = false;
@@ -46,7 +48,7 @@ public class levelController : MonoBehaviour
     public async void endGame(bool playerWin)
     {
         changeStatusOfScripts(false);
-        GameObject.FindGameObjectWithTag("Enemy").SetActive(false);
+        
 
         foreach (unitController unitController in FindObjectsOfType<unitController>())
         {
@@ -110,10 +112,29 @@ public class levelController : MonoBehaviour
         level %= SceneManager.sceneCountInBuildSettings;
         SceneManager.LoadScene(level);
     }
+    private bool isCameraAtFinalPosition = false;
     public void moveCameraAtFinalPosition()
     {
+        if (isCameraAtFinalPosition)
+            return;
+
+        isCameraAtFinalPosition = true;
+        
+
+        unitMatcher.enemyUnitsList.Clear();
+
+        foreach (GameObject unit in GameObject.FindGameObjectsWithTag("enemyUnit"))
+            Destroy(unit);
+        foreach (Transform baby in FindObjectOfType<enemyController>().enemyBabyUnits)
+        {
+            DOTween.Kill(baby);
+            Destroy(baby.gameObject);
+        }
+
         foreach (GameObject unit in GameObject.FindGameObjectsWithTag("playerUnit"))
             unit.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+
+        Destroy(GameObject.FindGameObjectWithTag("Enemy"));
         cinemachineAnimator.Play("ending");
     }
 }
