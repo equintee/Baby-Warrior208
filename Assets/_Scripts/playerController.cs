@@ -92,9 +92,14 @@ public class playerController : MonoBehaviour
         this.enabled = !this.enabled;
     }
 
-    public void spawnSkeletons(Vector3 spawnPosition, int unitLevel)
+    public async void spawnSkeletons(Vector3 spawnPosition, GameObject spawner)
     {
-        GameObject spawnedSkeleton = Instantiate(unitStats[unitLevel].unitPrefab, spawnPosition, Quaternion.identity, playerUnits.transform);
+            DOTween.Kill(spawner.transform);
+            spawner.transform.GetChild(2).GetComponent<ParticleSystem>().Play();
+            await spawner.transform.GetChild(0).DOScale(new Vector3(1.30f, 0.70f, 1), 0.25f).AsyncWaitForCompletion();
+            await spawner.transform.GetChild(0).DOScale(Vector3.one, 0.25f).AsyncWaitForCompletion();
+
+            GameObject spawnedSkeleton = Instantiate(unitStats[0].unitPrefab, spawnPosition, Quaternion.identity, playerUnits.transform);
             spawnedSkeleton.tag = "playerUnit";
             unitMatcher.addSkeletonToList(unitMatcher.playerUnitsList, spawnedSkeleton);
     }
@@ -113,7 +118,7 @@ public class playerController : MonoBehaviour
             spawnedBaby.transform.DOLookAt(powerUpSpawner.transform.position, 0f);
             spawnedBaby.transform.DOMoveX(powerUpSpawner.transform.position.x, 3.5f).SetSpeedBased().SetEase(Ease.Linear);
             await spawnedBaby.transform.DOMoveZ(powerUpSpawner.transform.position.z, 3.5f).SetSpeedBased().SetEase(Ease.Linear).AsyncWaitForCompletion();
-            spawnSkeletons(powerUpSpawner.transform.position, 0);
+            spawnSkeletons(powerUpSpawner.transform.position, powerUpSpawner);
             Destroy(spawnedBaby.gameObject);
         }
     }

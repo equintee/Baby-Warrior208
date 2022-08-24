@@ -7,8 +7,10 @@ public class unitMatcher : MonoBehaviour
     public float unitSpeed;
     public int goldPerUnit;
     public GameObject enemyCastle;
-    public GameObject powerUpSpawner;
+    public GameObject playerPowerUpSpawner;
+    public GameObject enemyPowerUpSpawner;
     public GameObject player;
+    public Transform enemySpawnersParent;
     public Transform playerUnits;
     public Transform enemyUnits;
     public Transform corpse;
@@ -17,6 +19,7 @@ public class unitMatcher : MonoBehaviour
     [HideInInspector] public List<GameObject> playerUnitsList;
     [HideInInspector] public List<GameObject> enemyUnitsList;
     [HideInInspector] public List<GameObject> playerSpawners;
+    [HideInInspector] public List<GameObject> enemySpawners;
 
 
     private levelController levelController;
@@ -35,13 +38,15 @@ public class unitMatcher : MonoBehaviour
         foreach (Transform enemyUnit in enemyUnits)
             enemyUnit.tag = "enemyUnit";
 
-        
+        foreach (Transform spawner in enemySpawnersParent)
+            enemySpawners.Add(spawner.gameObject);
 
     }
 
     private void Start()
     {
         playerSpawners = FindObjectOfType<playerController>().playerSpawners;
+        
     }
 
     private void Update()
@@ -68,13 +73,27 @@ public class unitMatcher : MonoBehaviour
             if (enemyUnitsList.Count > 0)
             {
                 skeletonController.setTarget(findClosestTarget(enemyUnitsList.ToArray(), skeleton));
+                return;
+            }
+            if(enemySpawners.Count > 0)
+            {
+                skeletonController.setTarget(findClosestTarget(enemySpawners.ToArray(), skeleton));
+                return;
             }
 
-            if (enemyUnits.childCount == 0 && skeletonController.getTarget() != enemyCastle.transform)
+            if(enemySpawners.Count == 0 && enemyPowerUpSpawner)
+            {
+                skeletonController.setTarget(enemyPowerUpSpawner.transform);
+                return;
+            }
+            
+            if (!enemyPowerUpSpawner && skeletonController.getTarget() != enemyCastle.transform)
             {
                 skeletonController.setTarget(enemyCastle.transform);
                 skeletonController.GetComponent<unitController>().isTargetSpawner = true;
             }
+
+
         }
 
         if (skeleton.CompareTag("enemyUnit"))
@@ -89,7 +108,7 @@ public class unitMatcher : MonoBehaviour
             }
             if(playerSpawners.Count == 0)
             {
-                skeletonController.setTarget(powerUpSpawner.transform);
+                skeletonController.setTarget(playerPowerUpSpawner.transform);
             }
         }
 

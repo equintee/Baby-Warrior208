@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -8,6 +9,9 @@ public class enemyController : MonoBehaviour
 {
     public GameObject unitPrefab;
     public Material enemyUnitMaterial;
+    public GameObject babyPrefab;
+    public Transform enemyBabyUnits;
+    public GameObject enemyPowerUpSpawner;
     public Transform enemyUnitsParent;
     public GameObject enemyField;
     public Transform enemySpawnersParent;
@@ -121,19 +125,43 @@ public class enemyController : MonoBehaviour
         navMeshAgent.SetDestination(findClosestObjectInArray(enemyManaList.ToArray()).position);
     }
 
-    private void spawnUnit(GameObject spawner)
+    private async void spawnUnit(GameObject spawner)
     {
-        if(enemyMana >= manaCost)
-        {
-            updateMana(-manaCost);
-            GameObject unit = Instantiate(unitPrefab, spawner.transform.parent.position, Quaternion.identity, enemyUnitsParent);
+            DOTween.Kill(spawner.transform);
+            spawner.transform.GetChild(2).GetComponent<ParticleSystem>().Play();
+            await spawner.transform.GetChild(0).DOScale(new Vector3(1.30f, 0.70f, 1), 0.25f).AsyncWaitForCompletion();
+            await spawner.transform.GetChild(0).DOScale(Vector3.one, 0.25f).AsyncWaitForCompletion();
+
+            GameObject unit = Instantiate(unitPrefab, spawner.transform.position, Quaternion.identity, enemyUnitsParent);
             unit.transform.GetChild(0).GetComponent<SkinnedMeshRenderer>().material = enemyUnitMaterial;
             unit.tag = "enemyUnit";
             unitMatcher.addSkeletonToList(unitMatcher.enemyUnitsList, unit);
-        }
 
     }
 
+    private async void spawnBaby(GameObject spawner)
+    {
+        if (enemyMana >= manaCost)
+        {
+            DOTween.Kill(spawner.transform);
+            spawner.transform.GetChild(3).GetComponent<ParticleSystem>().Play();
+            await spawner.transform.GetChild(0).DOScale(new Vector3(1.30f, 0.70f, 1), 0.25f).AsyncWaitForCompletion();
+            await spawner.transform.GetChild(0).DOScale(Vector3.one, 0.25f).AsyncWaitForCompletion();
+            updateMana(-manaCost);
+            Vector3 spawnPoint = spawner.transform.position;
+            spawnPoint.y = 1.5f;
+            GameObject baby = Instantiate(babyPrefab, spawner.transform.position, Quaternion.identity, enemyBabyUnits);
+            baby.transform.DOLookAt(enemyPowerUpSpawner.transform.position, 0f);
+            baby.transform.DOMoveZ(enemyPowerUpSpawner.transform.position.z, 3f).SetSpeedBased().SetEase(Ease.Linear);
+            await baby.transform.DOMoveX(enemyPowerUpSpawner.transform.position.x, 3f).SetSpeedBased().SetEase(Ease.Linear).AsyncWaitForCompletion();
+
+            spawnUnit(enemyPowerUpSpawner);
+            Destroy(baby.gameObject);
+
+            
+        }
+            
+    }
     private void updateMana(int value)
     {
         enemyMana += value;
@@ -217,7 +245,11 @@ public class enemyController : MonoBehaviour
         spawnTime += Time.deltaTime;
 
         if (spawnTime > 0.5f)
-            spawnUnit(other.transform.GetChild(0).gameObject);
+        {
+            spawnBaby(other.transform.parent.gameObject);
+            spawnTime = 0f;
+        }
+            
         
     }
 

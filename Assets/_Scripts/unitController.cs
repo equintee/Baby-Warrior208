@@ -83,10 +83,16 @@ public class unitController : MonoBehaviour
             unitMatcher.removeSpawnerFromList(target.gameObject);
             explodeCapsules();            
         }
+        else if(target && target.CompareTag("enemySpawner"))
+        {
+            unitMatcher.enemyUnitsList.Remove(target.gameObject);
+            explodeCapsules();
+        }
         else if(target && target.CompareTag("powerUpSpawner"))
         {
             explodeCapsules();
-            FindObjectOfType<levelController>().endGame(false);
+            if (transform.CompareTag("enemyUnit"))
+                FindObjectOfType<levelController>().endGame(false);
         }
         if(rb)
             rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
