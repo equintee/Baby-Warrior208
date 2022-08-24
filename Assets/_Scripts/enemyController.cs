@@ -46,7 +46,7 @@ public class enemyController : MonoBehaviour
 
         if (PlayerPrefs.HasKey("level"))
         {
-            manaGain = PlayerPrefs.GetInt("level") + 13;
+            manaGain = PlayerPrefs.GetInt("level") + 10;
             spawnChance = PlayerPrefs.GetInt("level") * 10 + 80;
         }
 
@@ -217,7 +217,7 @@ public class enemyController : MonoBehaviour
         spawnTime += Time.deltaTime;
 
         if (spawnTime > 0.5f)
-            spawnUnit(other.gameObject);
+            spawnUnit(other.transform.GetChild(0).gameObject);
         
     }
 

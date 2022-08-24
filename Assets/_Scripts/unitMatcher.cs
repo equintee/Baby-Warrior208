@@ -7,6 +7,7 @@ public class unitMatcher : MonoBehaviour
     public float unitSpeed;
     public int goldPerUnit;
     public GameObject enemyCastle;
+    public GameObject powerUpSpawner;
     public GameObject player;
     public Transform playerUnits;
     public Transform enemyUnits;
@@ -82,9 +83,13 @@ public class unitMatcher : MonoBehaviour
             {
                 skeletonController.setTarget(findClosestTarget(playerUnitsList.ToArray(), skeleton));
             }
-            if(playerUnitsList.Count == 0)
+            if(playerUnitsList.Count == 0 && playerSpawners.Count != 0)
             {
                 skeletonController.setTarget(findClosestTarget(playerSpawners.ToArray(), skeleton));
+            }
+            if(playerSpawners.Count == 0)
+            {
+                skeletonController.setTarget(powerUpSpawner.transform);
             }
         }
 
@@ -135,8 +140,6 @@ public class unitMatcher : MonoBehaviour
     {
         playerSpawners.Remove(spawner);
 
-        if (playerSpawners.Count == 0)
-            levelController.endGame(false);
     }
 
     public void addSpawnerToList(GameObject spawner)

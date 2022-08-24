@@ -11,6 +11,7 @@ TagManager:
   - mana
   - playerSpawner
   - enemyMana
+  - powerUpSpawner
   layers:
   - Default
   - TransparentFX

@@ -22,6 +22,7 @@ public class playerController : MonoBehaviour
     public GameObject babyPrefab;
     public List<unitStats> unitStats;
     public Transform playerUnits;
+    public Transform playerBabyUnits;
     public Transform playerSpawnersParent;
     public Joystick joystick;
     public TextMeshProUGUI manaText;
@@ -98,16 +99,20 @@ public class playerController : MonoBehaviour
             unitMatcher.addSkeletonToList(unitMatcher.playerUnitsList, spawnedSkeleton);
     }
 
-    public async void spawnBaby(Vector3 spawnPosition, int unitLevel)
+    public async void spawnBaby(Vector3 spawnPosition, int unitLevel, GameObject spawner)
     {
         if(playerMana >= unitStats[unitLevel].manaCost)
         {
+            DOTween.Kill(spawner.transform);
+            spawner.transform.GetChild(3).GetComponent<ParticleSystem>().Play();
+            await spawner.transform.GetChild(0).DOScale(new Vector3(1.30f, 0.70f, 1), 0.25f).AsyncWaitForCompletion();
+            await spawner.transform.GetChild(0).DOScale(Vector3.one, 0.25f).AsyncWaitForCompletion();
             updateMana(-unitStats[unitLevel].manaCost);
             spawnPosition.y = 1.5f;
-            GameObject spawnedBaby = Instantiate(babyPrefab, spawnPosition, Quaternion.identity, playerUnits.transform);
+            GameObject spawnedBaby = Instantiate(babyPrefab, spawnPosition, Quaternion.identity, playerBabyUnits.transform);
             spawnedBaby.transform.DOLookAt(powerUpSpawner.transform.position, 0f);
-            spawnedBaby.transform.DOMoveX(powerUpSpawner.transform.position.x, 2f).SetSpeedBased().SetEase(Ease.Linear);
-            await spawnedBaby.transform.DOMoveZ(powerUpSpawner.transform.position.z, 2f).SetSpeedBased().SetEase(Ease.Linear).AsyncWaitForCompletion();
+            spawnedBaby.transform.DOMoveX(powerUpSpawner.transform.position.x, 3.5f).SetSpeedBased().SetEase(Ease.Linear);
+            await spawnedBaby.transform.DOMoveZ(powerUpSpawner.transform.position.z, 3.5f).SetSpeedBased().SetEase(Ease.Linear).AsyncWaitForCompletion();
             spawnSkeletons(powerUpSpawner.transform.position, 0);
             Destroy(spawnedBaby.gameObject);
         }

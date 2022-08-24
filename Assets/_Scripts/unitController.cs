@@ -80,8 +80,13 @@ public class unitController : MonoBehaviour
         }
         else if(target && target.CompareTag("playerSpawner"))
         {
-            explodeCapsules();
             unitMatcher.removeSpawnerFromList(target.gameObject);
+            explodeCapsules();            
+        }
+        else if(target && target.CompareTag("powerUpSpawner"))
+        {
+            explodeCapsules();
+            FindObjectOfType<levelController>().endGame(false);
         }
         if(rb)
             rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
@@ -97,7 +102,7 @@ public class unitController : MonoBehaviour
     private void explodeCapsules()
     {
         List<Rigidbody> pieceRBList = new List<Rigidbody>();
-        foreach(Transform spawnerPiece in target.transform.GetChild(0))
+        foreach(Transform spawnerPiece in target.transform.GetChild(0).GetChild(0))
         {
             pieceRBList.Add(spawnerPiece.gameObject.AddComponent<Rigidbody>());
             spawnerPiece.gameObject.AddComponent<BoxCollider>();
