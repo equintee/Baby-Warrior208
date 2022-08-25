@@ -795,10 +795,11 @@ MonoBehaviour:
   damageAnimationLength: 1.25
   deathAnimationLength: 3.033
   gettingHitAnimationLength: 0
+  droppedGoldPrefab: {fileID: 6984129519591504202, guid: cbfb737610b375b418e69f8cd519ad9c, type: 3}
   isTargetSpawner: 0
   isAlive: 1
   isLookingForTarget: 1
-  target: {fileID: 0}
+  cancelAttack: 0
 --- !u!195 &7663058594392751907
 NavMeshAgent:
   m_ObjectHideFlags: 0

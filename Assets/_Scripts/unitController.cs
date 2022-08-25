@@ -12,6 +12,7 @@ public class unitController : MonoBehaviour
     public float damageAnimationLength;
     public float deathAnimationLength;
     public float gettingHitAnimationLength;
+    public GameObject droppedGoldPrefab;
     [HideInInspector] public bool isTargetSpawner = false;
     [HideInInspector] public bool isAlive = true;
     [HideInInspector] public bool isLookingForTarget = true;
@@ -169,6 +170,10 @@ public class unitController : MonoBehaviour
             unitMatcher.playerUnitsList.Remove(gameObject);
         if (transform.CompareTag("enemyUnit"))
         {
+            GameObject goldText = Instantiate(droppedGoldPrefab, transform.position + new Vector3(0, 3, 0), Quaternion.Euler(0, 180, 0), null);
+            goldText.transform.localScale = new Vector3(0.03f, 0.03f, 0.03f);
+            goldText.transform.DOMoveY(goldText.transform.position.y + 1, 1.5f).SetEase(Ease.Linear);
+            Destroy(goldText, 2f);
             unitMatcher.enemyUnitsList.Remove(gameObject);
             FindObjectOfType<playerController>().updateGold(unitMatcher.goldPerUnit);
         }
