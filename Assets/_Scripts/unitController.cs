@@ -172,8 +172,8 @@ public class unitController : MonoBehaviour
         {
             GameObject goldText = Instantiate(droppedGoldPrefab, transform.position + new Vector3(0, 3, 0), Quaternion.Euler(0, 180, 0), null);
             goldText.transform.localScale = new Vector3(0.03f, 0.03f, 0.03f);
-            goldText.transform.DOMoveY(goldText.transform.position.y + 1, 1.5f).SetEase(Ease.Linear);
-            Destroy(goldText, 2f);
+            goldText.transform.DOMoveY(goldText.transform.position.y + 1, 0.5f).SetEase(Ease.InCirc);
+            Destroy(goldText, 0.5f);
             unitMatcher.enemyUnitsList.Remove(gameObject);
             FindObjectOfType<playerController>().updateGold(unitMatcher.goldPerUnit);
         }
