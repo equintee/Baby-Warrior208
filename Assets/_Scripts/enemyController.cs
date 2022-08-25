@@ -164,8 +164,7 @@ public class enemyController : MonoBehaviour
             spawnPoint.y = 1.5f;
             GameObject baby = Instantiate(babyPrefab, spawner.transform.position, Quaternion.identity, enemyBabyUnits);
             baby.transform.DOLookAt(enemyPowerUpSpawner.transform.position, 0f);
-            baby.transform.DOMoveZ(enemyPowerUpSpawner.transform.position.z, 3f).SetSpeedBased().SetEase(Ease.Linear);
-            await baby.transform.DOMoveX(enemyPowerUpSpawner.transform.position.x, 3f).SetSpeedBased().SetEase(Ease.Linear).AsyncWaitForCompletion();
+            await baby.transform.DOMove(new Vector3(enemyPowerUpSpawner.transform.position.x, baby.transform.position.y, enemyPowerUpSpawner.transform.position.z), 3.5f).SetSpeedBased().SetEase(Ease.Linear).AsyncWaitForCompletion();
 
             spawnUnit(enemyPowerUpSpawner);
             Destroy(baby.gameObject);

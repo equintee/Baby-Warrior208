@@ -117,8 +117,8 @@ public class playerController : MonoBehaviour
             spawnPosition.y = 1.5f;
             GameObject spawnedBaby = Instantiate(babyPrefab, spawnPosition, Quaternion.identity, playerBabyUnits.transform);
             spawnedBaby.transform.DOLookAt(powerUpSpawner.transform.position, 0f);
-            spawnedBaby.transform.DOMoveX(powerUpSpawner.transform.position.x, 3.5f).SetSpeedBased().SetEase(Ease.Linear);
-            await spawnedBaby.transform.DOMoveZ(powerUpSpawner.transform.position.z, 3.5f).SetSpeedBased().SetEase(Ease.Linear).AsyncWaitForCompletion();
+            await spawnedBaby.transform.DOMove(new Vector3(powerUpSpawner.transform.position.x, spawnedBaby.transform.position.y, powerUpSpawner.transform.position.z), 3.5f).SetSpeedBased().SetEase(Ease.Linear).AsyncWaitForCompletion();
+
             spawnSkeletons(powerUpSpawner.transform.position, powerUpSpawner);
             Destroy(spawnedBaby.gameObject);
         }
